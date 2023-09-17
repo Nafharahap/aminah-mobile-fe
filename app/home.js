@@ -1,25 +1,41 @@
-import { Link } from 'expo-router'
-import { Text, View, SafeAreaView } from 'react-native'
+import { Link, useRouter } from 'expo-router'
+import { Text, View, SafeAreaView, Pressable, Image, StyleSheet } from 'react-native'
 import { Stack } from "expo-router";
 import { ScreenHeaderBtn } from '../components';
 import { icons } from '../constants';
-import { useEffect, useState } from 'react';
-import { getToken } from '../services/tokenService';
+import { useSession } from '../context/auth';
+
+function HeaderRight(props) {
+  if (props.session) {
+    return (
+      <ScreenHeaderBtn
+        iconUrl={icons.notification}
+        dimension={30}
+      />
+    )
+  }
+  else {
+    return (
+      <Pressable style={{
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        backgroundColor: '#076E5B',
+        borderRadius: 20
+      }}>
+        <Link href={'/auth/login'} style={{ color: '#FFFFFF' }}>Masuk</Link>
+      </ Pressable>
+    )
+  }
+}
 
 export default function Home() {
-  const [token, setToken] = useState(null)
+  const { session, signOut } = useSession();
+  const router = useRouter()
 
-  const isUserAuth = async () => {
-    const token = await getToken()
-    if (token) {
-      setToken(token)
-    }
-    return false
+  function onButtonProfilePressed() {
+    console.log('PROFILE BUTTON PRESSED');
+    router.push('/borrower')
   }
-
-  useEffect(() => {
-    isUserAuth()
-  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
@@ -27,26 +43,63 @@ export default function Home() {
         options={{
           headerShadowVisible: false,
           headerBackVisible: false,
-          headerRight: () => (
-            <ScreenHeaderBtn
-              iconUrl={icons.notification}
-              dimension={30}
-            />
-          ),
           headerLeft: () => (
             <ScreenHeaderBtn
               iconUrl={icons.burgerNav}
               dimension={30}
             />
           ),
-          headerTitle: ''
+          headerRight: () => <HeaderRight session={session} />,
+          headerTitle: 'Beranda',
+          headerTitleAlign: 'center',
+          headerBackground: () => {
+            const logoUrl = require('../assets/images/headerBg.png')
+            return (
+              <Image
+                style={{ ...StyleSheet.absoluteFill, height: '100%', width: '100%', resizeMode: 'stretch' }}
+                source={logoUrl}
+              />
+            )
+          }
         }}
       />
-      <View>
-        <Text>Home Page {token ? 'LOGIN' : 'GK LOGIN'}</Text>
-        <Link href={'/auth/login'}>Login</Link>
-        <Link href={'/auth/register'}>Daftar</Link>
-        <Link href="/modal-user">Present modal</Link>
+      <View style={{ gap: 8 }}>
+        <Text>Home Page {session ? 'LOGIN' : 'GK LOGIN'}</Text>
+        {
+          (session) ?
+            <Pressable
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+                backgroundColor: '#076E5B',
+                borderRadius: 20
+              }}
+              onPress={() => {
+                onButtonProfilePressed()
+              }}
+            >
+              <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Profil</Text>
+            </ Pressable>
+            : ''
+        }
+
+        {
+          (session) ?
+            <Pressable
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+                backgroundColor: '#076E5B',
+                borderRadius: 20
+              }}
+              onPress={() => {
+                signOut();
+              }}
+            >
+              <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Keluar</Text>
+            </ Pressable>
+            : ''
+        }
       </View>
     </SafeAreaView >
   );

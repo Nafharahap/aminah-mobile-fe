@@ -1,10 +1,5 @@
-import { Stack } from "expo-router";
-import { Image } from "react-native";
-import { ScreenHeaderBtn } from "../components";
-import { icons } from "../constants";
-// import * as SplashScreen from "expo-splash-screen";
-
-// SplashScreen.preventAutoHideAsync();
+import { Stack } from 'expo-router';
+import { SessionProvider } from '../context/auth';
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
@@ -12,33 +7,12 @@ export const unstable_settings = {
 };
 
 const RootLayout = () => {
+  // Set up the auth context and render our layout inside of it.
   return (
-    <Stack screenOptions={{
-      headerRight: () => (
-        <ScreenHeaderBtn
-          iconUrl={icons.notification}
-          dimension={30}
-        />
-      ),
-      headerLeft: () => (
-        <ScreenHeaderBtn
-          iconUrl={icons.burgerNav}
-          dimension={30}
-        />
-      ),
-      headerTitle: ''
-    }}
-    >
-      <Stack.Screen name="home" />
-      <Stack.Screen
-        name="modal-user"
-        options={{
-          // Set the presentation mode to modal for our modal route.
-          presentation: 'modal',
-        }}
-      />
-    </Stack >
-  )
+    <SessionProvider>
+      <Stack></Stack>
+    </SessionProvider>
+  );
 };
 
 export default RootLayout;

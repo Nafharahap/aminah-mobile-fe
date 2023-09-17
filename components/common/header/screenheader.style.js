@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
   },
   btnImg: (dimension) => ({
     width: dimension,
-    height: dimension
+    height: dimension,
+    backgroundColor: 'rgba(0,0,0,0)'
   }),
 });
 

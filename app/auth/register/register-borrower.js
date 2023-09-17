@@ -7,7 +7,7 @@ import { postRegisterBorrower } from "../../../services/authService"
 import { ScreenHeaderBtn } from "../../../components"
 import { icons } from "../../../constants"
 
-function LogoTitle() {
+function LogoImage() {
   const logoUrl = require('../../../assets/images/Logo-Aminah-02.png')
   return (
     <Image
@@ -17,7 +17,7 @@ function LogoTitle() {
   )
 }
 
-export default function Register() {
+export default function RegisterBorrower() {
   const router = useRouter()
 
   const [fullName, setFullName] = useState('')
@@ -58,7 +58,7 @@ export default function Register() {
               handlePress={() => router.back()}
             />
           ),
-          headerTitle: () => <LogoTitle />,
+          headerTitle: () => <LogoImage />,
           headerTitleAlign: 'center',
         }}
       />

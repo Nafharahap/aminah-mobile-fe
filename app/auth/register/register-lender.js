@@ -14,7 +14,7 @@ function LogoTitle() {
   )
 }
 
-export default function Register() {
+export default function RegisterLender() {
   const router = useRouter();
 
   return (

@@ -48,6 +48,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
+  pickerInput: {
+    borderRadius: 5,
+    backgroundColor: '#D9D9D9',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingVertical: 6,
+  },
   checkbox: {
     marginTop: 12,
     borderRadius: 5,

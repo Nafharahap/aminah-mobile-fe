@@ -2,36 +2,26 @@ import { Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-nat
 import styles from './index.style'
 import { Stack, Link, useRouter } from "expo-router";
 import { useState } from 'react';
-import { loginBorrower } from '../../../services/authService';
-import { getToken, saveToken } from '../../../services/tokenService';
+import { useSession } from '../../../context/auth';
 
 const logoUrl = require('../../../assets/images/Logo-Aminah-Logomark-03.png')
 
 export default function Login() {
   const router = useRouter()
+  const { signIn } = useSession();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const onButtonLoginPressed = async () => {
     try {
-      const response = await loginBorrower({
-        email,
-        password
-      })
-
-      console.log('Login Berhasil')
-      await saveToken(response.data.user.api_token)
-      const user = response.data.user
-      if (user.role === 'borrower') {
-        router.replace('/borrower')
-      } else if (user.role === 'lender') {
-        router.replace('/lender')
-      }
+      signIn(email, password);
+      console.log('Login Berhasil');
       alert('Login Berhasil')
+      router.replace('/home');
     } catch (error) {
-      console.log('Login Gagal', error)
-      alert(error)
+      console.log('Login Gagal');
+      alert('Login Gagal')
     }
   }
 
