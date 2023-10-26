@@ -1,105 +1,65 @@
-import { View, SafeAreaView, Text, Pressable, Image, ScrollView } from "react-native"
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
-import { getProfileBorrower } from "../../../services/borrowerService";
-import styles from "./index.style";
+import { Link } from 'expo-router'
+import { Text, View, SafeAreaView, Pressable, Image, StyleSheet, ScrollView, FlatList } from 'react-native'
+import { Stack } from "expo-router";
+import { useSession } from '../../../context/auth';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { BusinessCard } from "../../../components"
 
-export default function BorrowerDashboard() {
-  const [data, setData] = useState(null)
-
-  const getData = async () => {
-    try {
-      const response = await getProfileBorrower()
-      console.log(response);
-      if (response) {
-        setData(response.data.payload)
-      }
-    } catch (error) {
-      alert(error)
-    }
+function HeaderRight(props) {
+  if (props.session) {
+    return (
+      <Pressable style={{ marginRight: 12 }}>
+        <FontAwesome5 name="shopping-cart" size={24} color="#076E5B" />
+      </Pressable>
+    )
   }
-
-  useEffect(() => {
-    getData()
-  }, [])
-
-  const calculateReturnPaid = (transactions) => {
-    if (transactions) {
-      const paidTransactions = transactions.filter((transaction) => {
-        return transaction.status === 'success'
-      })
-
-      if (paidTransactions.length > 0) {
-        return paidTransactions
-          .map(paidTransaction => paidTransaction.transaction_amount)
-          .reduce((prev, next) => prev + next);
-      }
-    }
-    return 0
+  else {
+    return (
+      <Pressable style={{
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        backgroundColor: '#076E5B',
+        borderRadius: 20,
+        marginRight: 12
+      }}>
+        <Link href={'/auth/login'} style={{ color: '#FFFFFF' }}>Masuk</Link>
+      </ Pressable>
+    )
   }
+}
 
-  const calculateReturnNotPaid = (transactions) => {
-    if (transactions) {
-      const unPaidTransactions = transactions.filter((transaction) => {
-        return transaction.status !== 'success'
-      })
+export default function BorrowerHomePage() {
+  const { session } = useSession();
 
-      if (unPaidTransactions.length > 0) {
-        return unPaidTransactions
-          .map(unPaidTransaction => unPaidTransaction.transaction_amount)
-          .reduce((prev, next) => prev + next);
-      }
-    }
-    return 0
+  let businesses = []
+  for (let i = 0; i < 16; i++) {
+    const businessesImageUrl = require('../../../assets/images/product-image.png')
+    businesses.push({
+      id: i + 1,
+      image: businessesImageUrl,
+      businessesName: `Nama Usaha ${i + 1}`
+    })
+
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ flex: 1, padding: 16 }}>
-          <Image
-            style={{ width: 100, height: 100 }}
-            source={`http://127.0.0.1/pendaftaran/${data?.pengajuan?.business_image}`}
-          />
-          <Text>{`http://127.0.0.1/pendaftaran/${data?.pengajuan?.business_image}`}</Text>
-          <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>
-            {data?.user.latest_borrower ? data?.user.latest_borrower?.business_name : 'Belum ada nama usaha'}
-          </Text>
-
-          <Text>Nama Pemilik: {data?.user.name}</Text>
-          <Text>Email: {data?.user.email}</Text>
-          <Text>Nomor HP: {data?.user.latest_borrower?.phone_number}</Text>
-          <Text>Nama Rekening: {data?.user.latest_borrower?.account_name}</Text>
-          <Text>Nama Bank: {data?.user.latest_borrower?.bank_name}</Text>
-          <Text>No. Rek: {data?.user.latest_borrower?.account_number}</Text>
-          <Text>Saldo: {data?.user.balance}</Text>
-          <Text>Status Pengajuan: {data?.pengajuan?.status}</Text>
-          <Text>Jangka Waktu Pengajuan: {data?.pengajuan?.duration}</Text>
-          <Text>Estimasi Bagi Hasil: {data?.pengajuan?.profit_sharing_estimate}</Text>
-          <Text>Dana Pengajuan Awal: {data?.pengajuan?.borrower_first_submission}</Text>
-          <Text>Dana Disetujui: {data?.funding?.accepted_fund}</Text>
-          <Text>Pengembalian Lunas: {calculateReturnPaid(data?.transactions)}</Text>
-          <Text>Pengembalian Belum Lunas: {calculateReturnNotPaid(data?.transactions)}</Text>
-          <Text>Tujuan Pengajuan: {data?.pengajuan?.purpose}</Text>
-          <Text>Status Pendanaan: {data?.funding?.status}</Text>
-          <Text>Tanggal Jatuh Tempo: {data?.funding?.due_date}</Text>
-          <Text>Jumlah Lender Terkumpul: {data?.funding?.fundinglenders.length}</Text>
-        </View>
-      </ScrollView>
-
-      <View style={{ flexDirection: 'row', gap: 8, padding: 4 }}>
-        <Link href={'/borrower/pengajuan'} asChild>
-          <Pressable style={{ ...styles.button, backgroundColor: '#6C6C6C', flex: 1 }}>
-            <Text style={styles.buttonText}>Ajukan Pendanaan</Text>
-          </Pressable>
-        </Link>
-        <Pressable style={{ ...styles.button, backgroundColor: '#076E5B', flex: 1 }}>
-          <Text style={styles.buttonText}>Tarik Dana</Text>
-        </Pressable>
-        <Pressable style={{ ...styles.button, backgroundColor: '#199B57', flex: 1 }}>
-          <Text style={styles.buttonText}>Pengembalian Dana</Text>
-        </Pressable>
-      </View>
-    </SafeAreaView>
-  )
+    <SafeAreaView style={{ flex: 1, paddingHorizontal: 12, backgroundColor: '#D9D9D9' }}>
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerRight: () => <HeaderRight session={session} />
+        }}
+      />
+      <FlatList
+        data={businesses}
+        showsVerticalScrollIndicator={false}
+        numColumns={2}
+        renderItem={({ item }) => (<BusinessCard business={item} index={item.id - 1} />)}
+        style={{ flex: 1, paddingVertical: 12 }}
+        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView >
+  );
 }

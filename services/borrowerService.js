@@ -1,8 +1,7 @@
 import axios from "axios"
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-
-const API_BASE_URL = 'http://127.0.0.1:8000'
+import { API_BASE_URL } from '@env'
 
 async function getToken() {
   let token = ''

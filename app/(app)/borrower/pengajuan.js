@@ -1,23 +1,11 @@
-import { Stack, useRouter } from "expo-router";
-import { Image, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
-import styles from "./index.style";
+import { useRouter } from "expo-router";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
-import { ScreenHeaderBtn } from "../../../components";
-import { icons } from "../../../constants";
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from "react";
 import { postBorrowerSubmission } from "../../../services/borrowerService";
-
-function LogoTitle() {
-  const logoUrl = require('../../../assets/images/Logo-Aminah-02.png')
-  return (
-    <Image
-      style={{ width: 200, height: 50 }}
-      source={logoUrl}
-    />
-  )
-}
+import CurrencyInput from 'react-native-currency-input';
 
 export default function BorrowerPengajuan() {
   const router = useRouter()
@@ -52,17 +40,17 @@ export default function BorrowerPengajuan() {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
       allowsEditing: false,
       quality: 1,
     });
 
-    const res = await fetch(result.assets[0].uri);
+    console.log(result);
+
+    const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
     const blob = await res.blob();
     const type = blob.type.split('/').pop()
     const file = new File([blob], `file.${type}`);
-
-    console.log('BLOB', blob);
-    console.log('FILE', file);
 
     if (!result.canceled) {
       if (typeInput === 'ktp') {
@@ -103,55 +91,15 @@ export default function BorrowerPengajuan() {
 
       console.log('Registrasi Berhasil')
       alert('Registrasi Berhasil')
-      router.replace('/borrower')
+      router.replace('/borrower/profile')
     } catch (error) {
       console.log('Pengajuan Gagal', error)
       alert('Pengajuan Gagal')
     }
   }
 
-  const getBlobFile = async (result) => {
-    if (Platform.OS === 'web') {
-      const res = await fetch(result.assets[0].uri);
-      const blob = await res.blob();
-
-      console.log('BLOB', blob);
-
-      return blob
-    } else {
-      const uri =
-        Platform.OS === "android"
-          ? selectedImage.uri
-          : selectedImage.uri.replace("file://", "");
-      const filename = selectedImage.uri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const ext = match?.[1];
-      const type = match ? `image/${match[1]}` : `image`;
-      return {
-        uri,
-        name: `image.${ext}`,
-        type,
-      }
-    }
-  }
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <Stack.Screen
-        options={{
-          headerShadowVisible: false,
-          headerBackVisible: false,
-          headerLeft: () => (
-            <ScreenHeaderBtn
-              iconUrl={icons.leftArrow}
-              dimension='60%'
-              handlePress={() => router.back()}
-            />
-          ),
-          headerTitle: () => <LogoTitle />,
-          headerTitleAlign: 'center',
-        }}
-      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: 16 }}>
           <Text style={styles.textHeader}>Pengajuan Pendanaan</Text>
@@ -165,6 +113,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setFullName}
               value={fullName}
               placeholder='Nama Lenkap'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -175,6 +124,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerNoHp}
               value={ownerNoHp}
               placeholder='Nomor HP Pemilik UMKM'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -185,6 +135,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerNik}
               value={ownerNik}
               placeholder='NIK Pemilik UMKM'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -195,6 +146,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerAdress}
               value={ownerAdress}
               placeholder='Alamat Pemilik UMKM'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -205,6 +157,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setUmkmName}
               value={umkmName}
               placeholder='Nama UMKM'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -234,16 +187,23 @@ export default function BorrowerPengajuan() {
               onChangeText={setUmkmAddress}
               value={umkmAddress}
               placeholder='Alamat UMKM'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textLabel}>Pendapatan UMKM Per Bulan</Text>
-            <TextInput
+            <CurrencyInput
               style={styles.textInput}
-              onChangeText={setUmkmIncome}
+              onChangeValue={setUmkmIncome}
               value={umkmIncome}
+              prefix="Rp"
+              delimiter=","
+              separator="."
+              precision={0}
               placeholder='Pendapatan UMKM Per Bulan'
+              placeholderTextColor="#6C6C6C"
+              minValue={0}
             />
           </View>
 
@@ -254,6 +214,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerBankAccountName}
               value={ownerBankAccountName}
               placeholder='Nama Pemilik Rekening'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -264,6 +225,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerBankAccountNumber}
               value={ownerBankAccountNumber}
               placeholder='Nomor Rekening'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -274,16 +236,23 @@ export default function BorrowerPengajuan() {
               onChangeText={setOwnerBankName}
               value={ownerBankName}
               placeholder='Nama Bank'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textLabel}>Jumlah Pengajuan Pendanaan</Text>
-            <TextInput
+            <CurrencyInput
               style={styles.textInput}
-              onChangeText={setAmount}
+              onChangeValue={setAmount}
               value={amount}
+              prefix="Rp"
+              delimiter=","
+              separator="."
+              precision={0}
               placeholder='Jumlah Pengajuan Pendanaan'
+              placeholderTextColor="#6C6C6C"
+              minValue={0}
             />
           </View>
 
@@ -309,6 +278,7 @@ export default function BorrowerPengajuan() {
               onChangeText={setPurpose}
               value={purpose}
               placeholder='Tujuan Pengajuan'
+              placeholderTextColor="#6C6C6C"
             />
           </View>
 
@@ -334,7 +304,10 @@ export default function BorrowerPengajuan() {
             <Pressable
               style={styles.textInput}
               onPress={() => pickImage('ktp')}>
-              <Text style={{ textAlign: 'center' }}>{imageKtp ? 'Gambar Terpilih' : 'Pilih Gambar...'}</Text>
+              {imageKtp
+                ? <Text style={{ textAlign: 'center', fontWeight: 700 }}>Gambar Terpilih</Text>
+                : <Text style={{ textAlign: 'center', color: '#6C6C6C' }}>Pilih Gambar...</Text>
+              }
             </Pressable>
           </View>
 
@@ -343,7 +316,10 @@ export default function BorrowerPengajuan() {
             <Pressable
               style={styles.textInput}
               onPress={() => pickImage('siu')}>
-              <Text style={{ textAlign: 'center' }}>{imageSiu ? 'Gambar Terpilih' : 'Pilih Gambar...'}</Text>
+              {imageSiu
+                ? <Text style={{ textAlign: 'center', fontWeight: 700 }}>Gambar Terpilih</Text>
+                : <Text style={{ textAlign: 'center', color: '#6C6C6C' }}>Pilih Gambar...</Text>
+              }
             </Pressable>
           </View>
 
@@ -352,17 +328,22 @@ export default function BorrowerPengajuan() {
             <Pressable
               style={styles.textInput}
               onPress={() => pickImage('product')}>
-              <Text style={{ textAlign: 'center' }}>{imageProduct ? 'Gambar Terpilih' : 'Pilih Gambar...'}</Text>
+              {imageProduct
+                ? <Text style={{ textAlign: 'center', fontWeight: 700 }}>Gambar Terpilih</Text>
+                : <Text style={{ textAlign: 'center', color: '#6C6C6C' }}>Pilih Gambar...</Text>
+              }
             </Pressable>
           </View>
 
-          <Checkbox
-            style={styles.checkbox}
-            value={isChecked}
-            onValueChange={setIsChecked}
-            color={isChecked ? '#4630EB' : undefined}
-          />
-          <Text>Saya menyatakan bahwa yang saya masukkan adalah benar.</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 20 }}>
+            <Checkbox
+              style={styles.checkbox}
+              value={isChecked}
+              onValueChange={setIsChecked}
+              color={isChecked ? '#4630EB' : undefined}
+            />
+            <Text>Saya menyatakan bahwa yang saya masukkan adalah benar.</Text>
+          </View>
 
           <Pressable style={styles.buttonRegister} onPress={onRegisterUmkmButtonPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftarkan Usaha Saya Sekarang</Text>
@@ -372,3 +353,69 @@ export default function BorrowerPengajuan() {
     </SafeAreaView >
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: '16',
+    textAlign: 'center',
+    paddingVertical: 12,
+    borderRadius: 32,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: 12
+  },
+  buttonRegister: {
+    alignSelf: 'center',
+    paddingHorizontal: 36,
+    paddingVertical: 10,
+    borderWidth: 2,
+    textAlign: 'center',
+    borderRadius: 32,
+    marginTop: 20,
+    backgroundColor: '#076E5B',
+    borderColor: '#076E5B',
+  },
+  textHeader: {
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12
+  },
+  textSubHeader: {
+    color: '#6C6C6C',
+    fontSize: 12,
+    fontWeight: '400',
+    marginBottom: 12
+  },
+  textLabel: {
+    color: '#000000',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 12
+  },
+  textInput: {
+    borderRadius: 5,
+    backgroundColor: '#D9D9D9',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  pickerInput: {
+    borderRadius: 5,
+    backgroundColor: '#D9D9D9',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingVertical: 6,
+  },
+  checkbox: {
+    borderRadius: 5,
+    borderWidth: 1,
+    width: 24,
+    height: 24,
+    borderColor: '#076E5B',
+    backgroundColor: '#D9D9D9'
+  },
+})

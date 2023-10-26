@@ -4,11 +4,11 @@ import Checkbox from 'expo-checkbox'
 import { Stack, useRouter } from "expo-router"
 import styles from './register.style'
 import { postRegisterBorrower } from "../../../services/authService"
-import { ScreenHeaderBtn } from "../../../components"
 import { icons } from "../../../constants"
+import { ScreenHeaderBtn } from "../../../components"
 
 function LogoImage() {
-  const logoUrl = require('../../../assets/images/Logo-Aminah-02.png')
+  const logoUrl = require('../../../assets/images/logo-aminah-01.png')
   return (
     <Image
       style={{ width: 200, height: 50 }}
@@ -37,7 +37,7 @@ export default function RegisterBorrower() {
       })
 
       console.log('Registrasi Berhasil')
-      router.replace('/auth/login ')
+      router.replace('/(public)/auth/login')
       alert('Registrasi Berhasil')
     } catch (error) {
       console.log('Registrasi Gagal', error)

@@ -20,13 +20,13 @@ export default function Register() {
         <Text style={styles.logoText}>Register</Text>
 
         <View style={{ gap: 8, marginTop: 24 }}>
-          <Link href={'/auth/register/register-borrower'} asChild>
+          <Link href={'/auth/register-borrower'} asChild>
             <Pressable style={{ ...styles.buttonRegister, minWidth: 220 }}>
               <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar Jadi Mitra</Text>
             </Pressable>
           </Link>
           <Text style={{ textAlign: 'center', color: '#076E5B' }}>atau</Text>
-          <Link href={'/auth/register/register-lender'} asChild>
+          <Link href={'/auth/register-lender'} asChild>
             <Pressable style={{ ...styles.buttonRegister, minWidth: 220 }}>
               <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar Sebagai Lender</Text>
             </Pressable>

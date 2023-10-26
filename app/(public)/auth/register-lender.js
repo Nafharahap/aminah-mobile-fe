@@ -5,7 +5,7 @@ import { ScreenHeaderBtn } from "../../../components";
 import { icons } from "../../../constants"
 
 function LogoTitle() {
-  const logoUrl = require('../../../assets/images/Logo-Aminah-02.png')
+  const logoUrl = require('../../../assets/images/logo-aminah-01.png')
   return (
     <Image
       style={{ width: 200, height: 50 }}

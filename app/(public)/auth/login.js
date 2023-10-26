@@ -1,13 +1,11 @@
-import { Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
-import styles from './index.style'
+import { Text, View, SafeAreaView, Image, TextInput, Pressable, StyleSheet } from 'react-native'
 import { Stack, Link, useRouter } from "expo-router";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSession } from '../../../context/auth';
 
 const logoUrl = require('../../../assets/images/Logo-Aminah-Logomark-03.png')
 
 export default function Login() {
-  const router = useRouter()
   const { signIn } = useSession();
 
   const [email, setEmail] = useState('')
@@ -18,7 +16,6 @@ export default function Login() {
       signIn(email, password);
       console.log('Login Berhasil');
       alert('Login Berhasil')
-      router.replace('/home');
     } catch (error) {
       console.log('Login Gagal');
       alert('Login Gagal')
@@ -62,7 +59,62 @@ export default function Login() {
         <Text style={{ textAlign: 'center', color: '#076E5B', marginTop: 40 }}>
           Belum punya akun? <Link href={'/auth/register'} style={{ fontWeight: 'bold' }}>Daftar Disini!</Link>
         </Text>
+        <Text style={{ textAlign: 'center', color: '#076E5B', marginTop: 4 }}>
+          <Link href={'/home'} replace>Beranda</Link>
+        </Text>
       </View>
     </SafeAreaView >
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    padding: 28,
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  containerForm: {
+    width: '100%',
+    marginTop: 36,
+    flexDirection: 'column',
+    paddingHorizontal: 40,
+    gap: 16
+  },
+  logo: {
+    height: 120,
+    width: 132,
+  },
+  logoText: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '600'
+  },
+  textInputEmail: {
+    borderWidth: 2,
+    textAlign: 'center',
+    borderRadius: 24,
+    borderColor: '#199B57',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  textInputPassword: {
+    borderWidth: 2,
+    textAlign: 'center',
+    borderRadius: 24,
+    borderColor: '#199B57',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  buttonLogin: {
+    alignSelf: 'center',
+    marginTop: '16',
+    paddingHorizontal: 36,
+    paddingVertical: 10,
+    borderWidth: 2,
+    textAlign: 'center',
+    borderRadius: 32,
+    backgroundColor: '#076E5B',
+    borderColor: '#076E5B',
+  }
+});
