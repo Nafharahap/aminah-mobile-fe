@@ -20,3 +20,11 @@ export const postRegisterBorrower = async (data) => {
 
   return response
 }
+
+export const postRegisterLender = async (data) => {
+  const response = await axios.post(`${API_BASE_URL}/api/lender/daftar`, data, {
+    headers: headers
+  });
+
+  return response
+}

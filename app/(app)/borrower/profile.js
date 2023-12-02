@@ -1,6 +1,6 @@
-import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet } from "react-native"
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
+import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet, RefreshControl } from "react-native"
+import { Link, useFocusEffect } from "expo-router";
+import { useState, useCallback } from "react";
 import { getProfileBorrower } from "../../../services/borrowerService";
 import { API_BASE_URL } from '@env'
 
@@ -23,25 +23,35 @@ const LinkBorrower = ({ href, disabled, label, bgColor }) => {
 
 }
 
-export default function BorrowerDashboard() {
+export default function BorrowerProfile() {
   const [data, setData] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
   const [isImageExist, setIsImageExist] = useState(true)
 
   const getData = async () => {
     try {
       const response = await getProfileBorrower()
-      console.log(response);
       if (response) {
         setData(response.data.payload)
       }
     } catch (error) {
       alert(error)
+    } finally {
+      setRefreshing(false)
     }
   }
 
-  useEffect(() => {
-    getData()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getData();
+  }, []);
+
 
   const calculateReturnPaid = (transactions) => {
     if (transactions) {
@@ -75,7 +85,12 @@ export default function BorrowerDashboard() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={{ flex: 1, padding: 16 }}>
           <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold' }}>{data?.user.name}</Text>
 

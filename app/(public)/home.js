@@ -1,8 +1,10 @@
-import { Link } from 'expo-router'
-import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList } from 'react-native'
+import { Link, useFocusEffect } from 'expo-router'
+import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import { Stack } from "expo-router";
 import { useSession } from '../../context/auth';
 import { BusinessCard } from "../../components"
+import { getListMitra } from '../../services/publicService';
+import { useCallback, useState } from 'react';
 
 function HeaderRight(props) {
   return (
@@ -30,17 +32,54 @@ function LogoImage() {
 
 export default function Home() {
   const { session } = useSession();
+  const [businesses, setBusinesses] = useState([])
+  const [page, setPage] = useState(1)
+  const [lastPage, setLastPage] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
-  let businesses = []
-  for (let i = 0; i < 16; i++) {
-    const businessesImageUrl = require('../../assets/images/product-image.png')
-    businesses.push({
-      id: i + 1,
-      image: businessesImageUrl,
-      businessesName: `Nama Usaha ${i + 1}`
-    })
-
+  const getData = async () => {
+    setRefreshing(true);
+    try {
+      const response = await getListMitra()
+      if (response) {
+        setPage(response.data.payload.mitra.current_page)
+        setLastPage(response.data.payload.mitra.last_page)
+        setBusinesses(response.data.payload.mitra.data)
+      }
+    } catch (error) {
+      alert(error)
+    } finally {
+      setRefreshing(false)
+    }
   }
+
+  const getMoreData = async () => {
+    setRefreshing(true);
+    try {
+      if (page < lastPage) {
+        const nextPage = page + 1
+        const response = await getListMitra({ page: nextPage })
+        if (response) {
+          setPage(response.data.payload.mitra.current_page)
+          setBusinesses((prevData) => [...prevData, ...response.data.payload.mitra.data])
+        }
+      }
+    } catch (error) {
+      alert(error)
+    } finally {
+      setRefreshing(false)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
+
+  const onRefresh = useCallback(() => {
+    getData();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 12, backgroundColor: '#D9D9D9' }}>
@@ -65,10 +104,15 @@ export default function Home() {
         data={businesses}
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (<BusinessCard business={item} index={item.id - 1} />)}
-        style={{ flex: 1, paddingVertical: 12 }}
+        renderItem={({ index, item }) => (<BusinessCard business={item} index={index} />)}
+        style={{ flex: 1, paddingTop: 12 }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         keyExtractor={item => item.id}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        onEndReached={getMoreData}
+        onEndReachedThreshold={0.1}
+        contentContainerStyle={{ paddingBottom: 40, marginTop: -12 }}
       />
     </SafeAreaView >
   );

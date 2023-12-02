@@ -85,22 +85,22 @@ export default function RegisterBorrower() {
             />
           </View>
           <View style={{ marginTop: 10 }}>
-            <Text style={styles.textLabel}>Password</Text>
+            <Text style={styles.textLabel}>Kata Sandi</Text>
             <TextInput
               style={styles.textInput}
               onChangeText={setPassword}
               value={password}
-              placeholder='Password'
+              placeholder='Kata Sandi'
               secureTextEntry={true}
             />
           </View>
           <View style={{ marginTop: 10 }}>
-            <Text style={styles.textLabel}>Konfirmasi Password</Text>
+            <Text style={styles.textLabel}>Konfirmasi Kata Sandi</Text>
             <TextInput
               style={styles.textInput}
               onChangeText={setPasswordConfirm}
               value={passwordConfirm}
-              placeholder='Konfirmasi Password'
+              placeholder='Konfirmasi Kata Sandi'
               secureTextEntry={true}
             />
           </View>
