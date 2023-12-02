@@ -1,10 +1,13 @@
-import { View, SafeAreaView, Text, Image } from "react-native"
+import { useState } from "react"
+import { View, SafeAreaView, Text, ScrollView, TextInput, Pressable, Image } from "react-native"
+import Checkbox from 'expo-checkbox'
+import { Stack, useRouter } from "expo-router"
 import styles from './register.style'
-import { Stack, useRouter } from "expo-router";
-import { ScreenHeaderBtn } from "../../../components";
 import { icons } from "../../../constants"
+import { ScreenHeaderBtn } from "../../../components"
+import { postRegisterLender } from "../../../services/authService"
 
-function LogoTitle() {
+function LogoImage() {
   const logoUrl = require('../../../assets/images/logo-aminah-01.png')
   return (
     <Image
@@ -15,7 +18,32 @@ function LogoTitle() {
 }
 
 export default function RegisterLender() {
-  const router = useRouter();
+  const router = useRouter()
+
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [isChecked, setChecked] = useState(false)
+
+  const onButtonRegisterPressed = async () => {
+    try {
+      const response = await postRegisterLender({
+        fullName,
+        email,
+        password,
+        password_confirmation: passwordConfirm,
+        approvedCheck: isChecked
+      })
+
+      console.log('Registrasi Berhasil')
+      router.replace('/(public)/auth/login')
+      alert('Registrasi Berhasil')
+    } catch (error) {
+      console.log('Registrasi Gagal', error)
+      alert('Registrasi Gagal')
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -30,13 +58,66 @@ export default function RegisterLender() {
               handlePress={() => router.back()}
             />
           ),
-          headerTitle: () => <LogoTitle />,
+          headerTitle: () => <LogoImage />,
           headerTitleAlign: 'center',
         }}
       />
-      <View style={styles.container}>
-        <Text style={styles.logoText}>Daftar Sebagai Lender</Text>
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ flex: 1, padding: 16 }}>
+          <Text style={styles.textHeader}>Daftar Sebagai Pemodal</Text>
+          <Text style={styles.textSubHeader}>Lengkapi informasi mengenai akun dan kontak yang bisa dihubungi.</Text>
+          <View style={{ marginTop: 10 }}>
+            <Text style={styles.textLabel}>Nama Lengkap (Sesuai KTP)</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={setFullName}
+              value={fullName}
+              placeholder='Nama Lenkap'
+            />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={styles.textLabel}>Email</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={setEmail}
+              value={email}
+              placeholder='Email'
+            />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={styles.textLabel}>Kata Sandi</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={setPassword}
+              value={password}
+              placeholder='Kata Sandi'
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={styles.textLabel}>Konfirmasi Kata Sandi</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={setPasswordConfirm}
+              value={passwordConfirm}
+              placeholder='Konfirmasi Kata Sandi'
+              secureTextEntry={true}
+            />
+          </View>
+
+          <Checkbox
+            style={styles.checkbox}
+            value={isChecked}
+            onValueChange={setChecked}
+            color={isChecked ? '#4630EB' : undefined}
+          />
+          <Text>Saya menyetujui ketentuan layanan dan kebijakan privasi.</Text>
+
+          <Pressable style={styles.buttonRegister} onPress={onButtonRegisterPressed}>
+            <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </SafeAreaView >
-  );
+  )
 }
