@@ -12,14 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
 
   const onButtonLoginPressed = async () => {
-    try {
-      signIn(email, password);
-      console.log('Login Berhasil');
-      alert('Login Berhasil')
-    } catch (error) {
-      console.log('Login Gagal');
-      alert('Login Gagal')
-    }
+    signIn(email, password);
   }
 
   return (

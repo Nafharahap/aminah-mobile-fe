@@ -33,7 +33,7 @@ export default function RegisterLender() {
         email,
         password,
         password_confirmation: passwordConfirm,
-        approvedCheck: isChecked
+        agreeTerms: isChecked
       })
 
       console.log('Registrasi Berhasil')
@@ -41,7 +41,8 @@ export default function RegisterLender() {
       alert('Registrasi Berhasil')
     } catch (error) {
       console.log('Registrasi Gagal', error)
-      alert('Registrasi Gagal')
+      const errorMessage = error.response.data.message
+      alert(`Registrasi Gagal ${errorMessage}`)
     }
   }
 

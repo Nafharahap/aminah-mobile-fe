@@ -17,13 +17,22 @@ export function SessionProvider(props) {
     <AuthContext.Provider
       value={{
         signIn: async (email, password) => {
-          const response = await loginBorrower({
-            email,
-            password
-          })
+          try {
+            const response = await loginBorrower({
+              email,
+              password
+            })
 
-          const user = response.data.user
-          setSession(user);
+            const user = response.data.user
+            console.log('Login Gagal');
+            alert('Login Berhasil')
+            setSession(user);
+          } catch (error) {
+            console.log('Login Gagal');
+            const errorMessage = error.response.data.message
+            alert(`Login Gagal ${errorMessage}`)
+          }
+
         },
         signOut: () => {
           setSession(null);

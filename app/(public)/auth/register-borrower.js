@@ -41,7 +41,8 @@ export default function RegisterBorrower() {
       alert('Registrasi Berhasil')
     } catch (error) {
       console.log('Registrasi Gagal', error)
-      alert('Registrasi Gagal')
+      const errorMessage = error.response.data.message
+      alert(`Registrasi Gagal ${errorMessage}`)
     }
   }
 
