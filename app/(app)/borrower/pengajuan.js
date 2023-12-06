@@ -91,7 +91,7 @@ export default function BorrowerPengajuan() {
 
       console.log('Registrasi Berhasil')
       alert('Registrasi Berhasil')
-      router.replace('/borrower/profile')
+      router.back()
     } catch (error) {
       console.log('Pengajuan Gagal', error)
       alert('Pengajuan Gagal')
