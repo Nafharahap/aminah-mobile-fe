@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'expo-router'
 import { Drawer } from 'expo-router/drawer';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Image, Pressable } from 'react-native';
 import { icons } from '../../../constants'
 import { useSession } from '../../../context/auth';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 const HeaderBg = () => {
   const logoUrl = require('../../../assets/images/headerBg.png')

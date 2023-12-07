@@ -1,6 +1,5 @@
 import { useFocusEffect } from 'expo-router'
 import { View, SafeAreaView, Image, StyleSheet, FlatList } from 'react-native'
-import { Stack } from "expo-router";
 import { BusinessCard } from "../../../components"
 import { useCallback, useState } from 'react';
 import { getListMitra } from '../../../services/publicService';
@@ -57,21 +56,6 @@ export default function BorrowerHome() {
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 12, backgroundColor: '#D9D9D9' }}>
-      <Stack.Screen
-        options={{
-          headerShadowVisible: false,
-          headerBackVisible: false,
-          headerBackground: () => {
-            const logoUrl = require('../../../assets/images/headerBg.png')
-            return (
-              <Image
-                style={{ ...StyleSheet.absoluteFill, height: '100%', width: '100%', resizeMode: 'stretch' }}
-                source={logoUrl}
-              />
-            )
-          }
-        }}
-      />
       <FlatList
         data={businesses}
         numColumns={2}

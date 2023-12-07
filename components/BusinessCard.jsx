@@ -20,7 +20,7 @@ const Business = ({ business, index }) => {
   }
 
   const onPressCard = () => {
-    console.log(business.id);
+    router.push({ pathname: '/(app)/mitra/[:id]', params: { id: business.id } })
   }
 
   return (
