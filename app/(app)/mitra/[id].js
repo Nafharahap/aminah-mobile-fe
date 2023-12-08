@@ -39,8 +39,8 @@ const BusinessDetailPage = () => {
     getData();
   }, []);
 
-  const onButtonButPressed = () => {
-    router.push({ pathname: '/(app)/mitra/modal', params: { unitCount } })
+  const onButtonBuyPressed = () => {
+    router.push({ pathname: '/(app)/mitra/modalCartDetails', params: { id: business.id, count: unitCount } })
   }
 
   return (
@@ -180,7 +180,7 @@ const BusinessDetailPage = () => {
             <Text style={{ fontSize: 12 }}>{unitCount}</Text>
             <Entypo onPress={() => setUnitCount(unitCount + 1)} name="circle-with-plus" size={20} color="#076E5B" />
           </View>
-          <Pressable style={{ paddingHorizontal: 16, paddingVertical: 2, width: 80, borderRadius: 20, backgroundColor: '#076E5B' }} onPress={onButtonButPressed}>
+          <Pressable style={{ paddingHorizontal: 16, paddingVertical: 2, width: 80, borderRadius: 20, backgroundColor: '#076E5B' }} onPress={onButtonBuyPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 500 }}>Beli</Text>
           </Pressable>
         </View>
