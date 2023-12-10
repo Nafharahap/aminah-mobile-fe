@@ -1,5 +1,5 @@
 import { useFocusEffect } from 'expo-router'
-import { View, SafeAreaView, Image, StyleSheet, FlatList } from 'react-native'
+import { View, SafeAreaView, Image, StyleSheet, FlatList, Pressable } from 'react-native'
 import { BusinessCard } from "../../../components"
 import { useCallback, useState } from 'react';
 import { getListMitra } from '../../../services/publicService';
@@ -61,8 +61,8 @@ export default function BorrowerHome() {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<BusinessCard business={item} index={index} />)}
-        style={{ flex: 1, paddingTop: 12 }}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        style={{ flex: 1, paddingVertical: 12 }}
+        ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
         keyExtractor={item => item.id}
         refreshing={refreshing}
         onRefresh={onRefresh}

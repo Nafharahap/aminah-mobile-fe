@@ -26,7 +26,6 @@ const LinkBorrower = ({ href, disabled, label, bgColor }) => {
 export default function BorrowerProfile() {
   const [data, setData] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
-  const [isImageExist, setIsImageExist] = useState(true)
 
   const getData = async () => {
     try {
@@ -100,8 +99,8 @@ export default function BorrowerProfile() {
           <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
             <Image
               style={{ width: 60, height: 60, borderRadius: '50%' }}
-              source={isImageExist ? `${API_BASE_URL}/pendaftaran/${data?.pengajuan?.business_image}` : require('../../../assets/images/profile-placeholder.jpeg')}
-              onError={() => setIsImageExist(null)}
+              source={`${API_BASE_URL}/pendaftaran/${data?.pengajuan?.business_image}`}
+              defaultSource={require('../../../assets/images/profile-placeholder.jpeg')}
             />
             <View>
               <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingVertical: 6,
+    paddingVertical: 10,
   },
   checkbox: {
     marginTop: 12,

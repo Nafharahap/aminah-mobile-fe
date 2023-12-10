@@ -23,7 +23,7 @@ async function getToken() {
   return token
 }
 
-export const getProfileLender = async () => {
+export const getListPembayaran = async () => {
   const token = await getToken();
 
   const headers = {
@@ -31,14 +31,29 @@ export const getProfileLender = async () => {
     Authorization: `Bearer ${token}`
   }
 
-  const response = await axios.get(`${API_BASE_URL}/api/lender/profile`, {
+  const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar`, {
     headers: headers
   });
 
   return response
 }
 
-export const postLenderSubmission = async (data) => {
+export const getDetailPembayaran = async (id) => {
+  const token = await getToken();
+
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`
+  }
+
+  const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar/detail/${id}`, {
+    headers: headers
+  });
+
+  return response
+}
+
+export const postIsiDompet = async (data) => {
   const token = await getToken();
 
   const headers = {
@@ -47,14 +62,14 @@ export const postLenderSubmission = async (data) => {
     'Content-Type': 'multipart/form-data',
   }
 
-  const response = await axios.post(`${API_BASE_URL}/api/lender/profile/update`, data, {
+  const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/isi`, data, {
     headers: headers
   });
 
   return response
 }
 
-export const postCheckoutCart = async (data) => {
+export const postBayar = async (data) => {
   const token = await getToken();
 
   const headers = {
@@ -63,7 +78,7 @@ export const postCheckoutCart = async (data) => {
     'Content-Type': 'multipart/form-data',
   }
 
-  const response = await axios.post(`${API_BASE_URL}/api/lender/checkout-api`, data, {
+  const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/bayar`, data, {
     headers: headers
   });
 

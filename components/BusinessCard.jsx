@@ -4,9 +4,9 @@ import { formatNumber } from "react-native-currency-input";
 import * as Progress from 'react-native-progress';
 import { API_BASE_URL } from '@env'
 import { useRouter } from "expo-router";
+import { BUSINESS_TYPE_LABEL } from "../constants/general";
 
 const Business = ({ business, index }) => {
-  const [isImageExist, setIsImageExist] = useState(true)
   const router = useRouter()
 
   const formatCurrency = (number) => {
@@ -20,7 +20,7 @@ const Business = ({ business, index }) => {
   }
 
   const onPressCard = () => {
-    router.push({ pathname: '/(app)/mitra/[:id]', params: { id: business.id } })
+    router.push({ pathname: '/(app)/lender/mitra/[:id]', params: { id: business.id } })
   }
 
   return (
@@ -37,8 +37,8 @@ const Business = ({ business, index }) => {
           }
       ]}>
         <Image
-          source={isImageExist ? `${API_BASE_URL}/pendaftaran/${business.borrower?.business_image}` : require('../assets/images/profile-placeholder.jpeg')}
-          onError={() => setIsImageExist(null)}
+          source={`${API_BASE_URL}/pendaftaran/${business.borrower?.business_image}`}
+          defaultSource={require('../assets/images/profile-placeholder.jpeg')}
           style={{
             width: '100%',
             minHeight: 108,
@@ -62,7 +62,7 @@ const Business = ({ business, index }) => {
                 paddingHorizontal: 8,
                 paddingVertical: 2
               }}>
-                {business.borrower?.business_type}
+                {BUSINESS_TYPE_LABEL[Number.isInteger(Number(business?.borrower?.business_type)) ? Number(business?.borrower?.business_type) : 8]}
               </Text>
             </View>
             <Text style={{ fontWeight: 500, fontSize: 10 }}>Terkumpul <Text style={{ color: '#199B57' }}>{business.dana_terkumpul}</Text></Text>

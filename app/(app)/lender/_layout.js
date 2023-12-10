@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'expo-router'
 import { Drawer } from 'expo-router/drawer';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Image, Pressable } from 'react-native';
 import { icons } from '../../../constants'
 import { useSession } from '../../../context/auth';
+import { CartIcon } from '../../../components';
 
 const HeaderBg = () => {
   const logoUrl = require('../../../assets/images/headerBg.png')
@@ -19,9 +20,7 @@ const HeaderBg = () => {
 function HeaderRight(props) {
   if (props.session) {
     return (
-      <Pressable style={{ marginRight: 12 }}>
-        <FontAwesome5 name="shopping-cart" size={24} color="#076E5B" />
-      </Pressable>
+      <CartIcon />
     )
   }
   else {
@@ -71,12 +70,16 @@ const LenderDrawerLayout = () => {
         name="profile"
         options={{
           drawerLabel: "Profil Keuangan",
-          title: "Profil Keuangan",
+          title: "Profil",
           headerTitleAlign: 'center',
           drawerIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
           headerBackground: () => <HeaderBg />
         }}
       />
+      <Drawer.Screen name="mitra" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="(profile)" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="pembayaran" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="cart" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
     </Drawer>
   )
 }

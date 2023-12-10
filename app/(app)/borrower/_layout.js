@@ -63,16 +63,7 @@ const BorrowerDrawerLayout = () => {
           headerBackground: () => <HeaderBg />
         }}
       />
-      <Drawer.Screen
-        name="pengajuan"
-        options={{
-          drawerLabel: "Pengajuan Pendanaan",
-          title: "Pengajuan Pendanaan",
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-          drawerIcon: ({ color }) => <MaterialCommunityIcons name="cash-multiple" size={24} color={color} />
-        }}
-      />
+      <Drawer.Screen name="(profile)" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
     </Drawer>
   )
 }

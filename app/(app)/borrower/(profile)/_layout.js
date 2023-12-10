@@ -4,7 +4,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react'
 
 const HeaderBg = () => {
-  const logoUrl = require('../../../assets/images/headerBg.png')
+  const logoUrl = require('../../../../assets/images/headerBg.png')
   return (
     <Image
       style={{ ...StyleSheet.absoluteFill, height: '100%', width: '100%', resizeMode: 'stretch' }}
@@ -13,15 +13,13 @@ const HeaderBg = () => {
   )
 }
 
-const MitraDetailLayout = () => {
+const BorrowerProfiLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name='[id]' options={{ headerShown: false }} />
       <Stack.Screen
-        name='modalCartDetails'
+        name='pengajuan'
         options={({ navigation }) => ({
-          presentation: 'modal',
-          headerTitle: 'Rincian Pembelian',
+          headerTitle: 'Pengajuan Mitra',
           headerTitleAlign: 'center',
           headerLeft: () => {
             return (
@@ -37,4 +35,4 @@ const MitraDetailLayout = () => {
   )
 }
 
-export default MitraDetailLayout
+export default BorrowerProfiLayout

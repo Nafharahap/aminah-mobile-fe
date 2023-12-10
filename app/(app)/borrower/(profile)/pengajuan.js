@@ -4,7 +4,7 @@ import Checkbox from "expo-checkbox";
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from "react";
-import { postBorrowerSubmission } from "../../../services/borrowerService";
+import { postBorrowerSubmission } from "../../../../services/borrowerService";
 import CurrencyInput from 'react-native-currency-input';
 
 export default function BorrowerPengajuan() {
@@ -342,7 +342,7 @@ export default function BorrowerPengajuan() {
               onValueChange={setIsChecked}
               color={isChecked ? '#4630EB' : undefined}
             />
-            <Text>Saya menyatakan bahwa yang saya masukkan adalah benar.</Text>
+            <Text>Saya menyatakan bahwa data yang saya masukkan adalah benar.</Text>
           </View>
 
           <Pressable style={styles.buttonRegister} onPress={onRegisterUmkmButtonPressed}>
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingVertical: 6,
+    paddingVertical: 10,
   },
   checkbox: {
     borderRadius: 5,

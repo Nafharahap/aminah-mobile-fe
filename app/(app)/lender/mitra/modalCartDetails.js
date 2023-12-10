@@ -2,23 +2,22 @@ import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
-import { getDetailMitra } from '../../../services/publicService'
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
+import { getDetailMitra } from '../../../../services/publicService'
 import { API_BASE_URL } from '@env'
-import { Entypo, Ionicons } from '@expo/vector-icons';
-import { formatCurrencyRp } from '../../../helpers/formatNumber'
+import { Entypo } from '@expo/vector-icons';
+import { formatCurrencyRp } from '../../../../helpers/formatNumber'
+import { useCart } from '../../../../context/cart'
 
 const ModalCardDetails = () => {
-  const router = useRouter()
+  const navigation = useNavigation()
+  const { addToCart } = useCart()
   const params = useLocalSearchParams();
   const { id, count } = params
   const [business, setBusiness] = useState(null)
-  const [refreshing, setRefreshing] = useState()
-  const [isImageExist, setIsImageExist] = useState(true)
   const [unitCount, setUnitCount] = useState(Number(count))
 
   const getData = async () => {
-    setRefreshing(true);
     try {
       const response = await getDetailMitra(id)
       if (response) {
@@ -26,8 +25,6 @@ const ModalCardDetails = () => {
       }
     } catch (error) {
       alert(error)
-    } finally {
-      setRefreshing(false)
     }
   }
 
@@ -36,6 +33,22 @@ const ModalCardDetails = () => {
       getData();
     }, [])
   );
+
+  const onAddToCartPressed = () => {
+    const cartItem = {
+      id: business.id,
+      borrower_id: business.borrower_id,
+      borrower_user_id: business.borrower.user.id,
+      name: business.borrower.business_name,
+      borrower_name: business.borrower.name,
+      image: business.borrower.business_image,
+      price: 100000,
+      quantity: unitCount,
+      selected: true
+    }
+    addToCart(cartItem)
+    navigation.goBack()
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -51,8 +64,8 @@ const ModalCardDetails = () => {
           <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
             <Image
               style={{ width: 48, height: 48, borderRadius: '50%' }}
-              source={isImageExist ? `${API_BASE_URL}/pendaftaran/${business?.pengajuan?.business_image}` : require('../../../assets/images/profile-placeholder.jpeg')}
-              onError={() => setIsImageExist(null)}
+              source={`${API_BASE_URL}/pendaftaran/${business?.pengajuan?.business_image}`}
+              defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
             />
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>
@@ -126,7 +139,7 @@ const ModalCardDetails = () => {
           <Text style={{ fontSize: 20, fontWeight: 700, color: '#199B57' }}>{formatCurrencyRp(unitCount * 100000)}</Text>
         </View>
         <View style={{ flex: 4 }}>
-          <Pressable style={{ width: '100%', height: '100%', backgroundColor: '#076E5B', justifyContent: 'center' }}>
+          <Pressable onPress={onAddToCartPressed} style={{ width: '100%', height: '100%', backgroundColor: '#076E5B', justifyContent: 'center' }}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 700 }}>Add to Cart</Text>
           </Pressable>
         </View>

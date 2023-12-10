@@ -1,18 +1,15 @@
 import { Link, useFocusEffect } from 'expo-router'
-import { Text, View, SafeAreaView, Pressable, Image, StyleSheet, FlatList } from 'react-native'
+import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList } from 'react-native'
 import { Stack } from "expo-router";
 import { useSession } from '../../../context/auth';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { BusinessCard } from "../../../components"
+import { BusinessCard, CartIcon } from "../../../components"
 import { useCallback, useState } from 'react';
 import { getListMitra } from '../../../services/publicService';
 
 function HeaderRight(props) {
   if (props.session) {
     return (
-      <Pressable style={{ marginRight: 12 }}>
-        <FontAwesome5 name="shopping-cart" size={24} color="#076E5B" />
-      </Pressable>
+      <CartIcon />
     )
   }
   else {
@@ -87,7 +84,6 @@ export default function BorrowerHome() {
         options={{
           headerShadowVisible: false,
           headerBackVisible: false,
-          headerRight: () => <HeaderRight session={session} />,
           headerBackground: () => {
             const logoUrl = require('../../../assets/images/headerBg.png')
             return (

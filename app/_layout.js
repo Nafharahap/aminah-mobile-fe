@@ -1,6 +1,7 @@
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { SessionProvider, useSession } from '../context/auth';
 import { useEffect } from 'react';
+import { CartProvider } from '../context/cart';
 
 const InitialLayout = () => {
   const { session } = useSession()
@@ -30,7 +31,9 @@ const RootLayout = () => {
   // Set up the auth context and render our layout inside of it.
   return (
     <SessionProvider>
-      <InitialLayout />
+      <CartProvider>
+        <InitialLayout />
+      </CartProvider>
     </SessionProvider>
   );
 };
