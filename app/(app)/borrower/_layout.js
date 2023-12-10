@@ -1,9 +1,7 @@
+import { Stack, useRouter } from 'expo-router'
+import { Pressable, Image } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
-import { Drawer } from 'expo-router/drawer';
-import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image, Pressable } from 'react-native';
-import { icons } from '../../../constants'
-import { useSession } from '../../../context/auth';
 
 const HeaderBg = () => {
   const logoUrl = require('../../../assets/images/headerBg.png')
@@ -15,57 +13,37 @@ const HeaderBg = () => {
   )
 }
 
-const BorrowerDrawerLayout = () => {
-  const { signOut } = useSession();
-
-  const onLogoutPress = () => {
-    signOut()
-  }
+const BorrowerRootLayout = () => {
+  const router = useRouter()
 
   return (
-    <Drawer screenOptions={({ navigation }) => ({
-      drawerStyle: { backgroundColor: '#199B57' },
-      drawerActiveBackgroundColor: '#076E5B',
-      drawerActiveTintColor: 'white',
-      drawerInactiveTintColor: 'white',
-      headerLeft: () => {
-        return (
-          <Pressable style={{ marginLeft: 12 }} onPress={navigation.toggleDrawer}>
-            <Image source={icons.burgerNav} />
-          </Pressable>
-        )
-      }
-    })}>
-      <Drawer.Screen
-        name="index"
+    <Stack
+      initialRouteName='(drawer)'
+      screenOptions={{
+        headerLeft: () => {
+          return (
+            <Pressable style={{ marginLeft: 16 }} onPress={router.back}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </Pressable>
+          )
+        },
+        headerBackground: () => <HeaderBg />
+      }}>
+
+      <Stack.Screen
+        name='(drawer)'
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name='pengajuan'
         options={{
-          drawerLabel: "Beranda",
-          title: "Beranda",
+          headerTitle: 'Pengajuan Mitra',
           headerTitleAlign: 'center',
-          drawerIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />,
-          headerBackground: () => <HeaderBg />
         }}
       />
-      <Drawer.Screen
-        name="profile"
-        options={{
-          drawerLabel: "Profil Keuangan",
-          title: "Profil Keuangan",
-          headerTitleAlign: 'center',
-          drawerIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
-          headerRight: () => {
-            return (
-              <Pressable style={{ marginRight: 12 }} onPress={() => onLogoutPress()}>
-                <Entypo name="log-out" size={24} color="#076E5B" />
-              </Pressable>
-            )
-          },
-          headerBackground: () => <HeaderBg />
-        }}
-      />
-      <Drawer.Screen name="(profile)" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-    </Drawer>
+    </Stack>
   )
 }
 
-export default BorrowerDrawerLayout
+export default BorrowerRootLayout

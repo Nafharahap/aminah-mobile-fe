@@ -1,8 +1,8 @@
 import { useFocusEffect } from 'expo-router'
 import { View, SafeAreaView, Image, StyleSheet, FlatList, Pressable } from 'react-native'
-import { BusinessCard } from "../../../components"
+import { BusinessCard } from "../../../../components"
 import { useCallback, useState } from 'react';
-import { getListMitra } from '../../../services/publicService';
+import { getListMitra } from '../../../../services/publicService';
 
 export default function BorrowerHome() {
   const [businesses, setBusinesses] = useState([])

@@ -2,10 +2,10 @@ import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet, Ref
 import { Link, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
 import { API_BASE_URL } from '@env'
-import { getProfileLender } from "../../../services/lenderService";
-import { formatCurrencyRp } from "../../../helpers/formatNumber";
+import { getProfileLender } from "../../../../services/lenderService";
+import { formatCurrencyRp } from "../../../../helpers/formatNumber";
 import { MaterialIcons, FontAwesome5, FontAwesome, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import { useSession } from "../../../context/auth";
+import { useSession } from "../../../../context/auth";
 
 export default function LenderProfile() {
   const [profile, setProfile] = useState(null)
@@ -53,19 +53,19 @@ export default function LenderProfile() {
             ? (
               <Text style={{ fontSize: 12, textAlign: 'center', paddingVertical: 16, backgroundColor: '#fff3cd' }}>
                 Profil kamu belum lengkap, lengkapi profil kamu
-                <Link href={'/(app)/lender/(profile)/fill'}>
+                <Link href={'/(app)/lender/fill'}>
                   <Text style={{ fontSize: 12, color: '#5fcf80' }}> disini!!</Text>
                 </Link>
               </Text>
             )
             : null
         }
-        <ImageBackground source={require('../../../assets/images/headerBg.png')} style={{ height: 'auto', width: '100%' }}>
+        <ImageBackground source={require('../../../../assets/images/headerBg.png')} style={{ height: 'auto', width: '100%' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16 }}>
             <Image
               style={{ width: 96, height: 96, borderRadius: '50%' }}
               source={`${API_BASE_URL}/profile/${profile?.lender?.lender_image}`}
-              defaultSource={require('../../../assets/images/profile-placeholder.jpeg')}
+              defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
             />
             <View style={{ marginLeft: 20, flex: 1 }}>
               <Text style={{ color: '#000000', fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>
@@ -128,7 +128,7 @@ export default function LenderProfile() {
             </View>
           </View>
 
-          <Link href={'/(app)/lender/(profile)/topup'} >
+          <Link href={'/(app)/lender/topup'} >
             <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
               <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
                 <MaterialCommunityIcons name="bank-transfer-in" size={36} color="white" />
@@ -142,7 +142,7 @@ export default function LenderProfile() {
             </View>
           </Link>
 
-          <Link href={'/(app)/lender/pembayaran/list'} >
+          <Link href={'/(app)/lender/pembayaran'} >
             <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
               <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
                 <MaterialIcons name="payments" size={36} color="white" />

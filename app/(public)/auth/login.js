@@ -53,7 +53,7 @@ export default function Login() {
           Belum punya akun? <Link href={'/auth/register'} style={{ fontWeight: 'bold' }}>Daftar Disini!</Link>
         </Text>
         <Text style={{ textAlign: 'center', color: '#076E5B', marginTop: 4 }}>
-          <Link href={'/home'} replace>Beranda</Link>
+          <Link href={'/home'} replace={true}>Beranda</Link>
         </Text>
       </View>
     </SafeAreaView >

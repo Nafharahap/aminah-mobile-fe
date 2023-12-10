@@ -109,7 +109,7 @@ const DetailPembayaran = () => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
                 <Text>Total Pembayaran:</Text>
-                <Text>{formatCurrencyRp(data?.transaction.trx_hashtransaction_amount)}</Text>
+                <Text>{formatCurrencyRp(data?.transaction.transaction_amount)}</Text>
               </View>
             </View>
 

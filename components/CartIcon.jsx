@@ -14,7 +14,7 @@ const CartIcon = () => {
   }, [cart])
 
   const onPressCart = () => {
-    router.push({ pathname: '/(app)/lender/cart/list' })
+    router.push({ pathname: '/(app)/lender/cart' })
   }
 
   return (

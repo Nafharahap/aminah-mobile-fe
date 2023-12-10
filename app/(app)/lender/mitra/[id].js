@@ -6,6 +6,9 @@ import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { API_BASE_URL } from '@env'
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useSession } from '../../../../context/auth';
+import { formatCurrencyRp } from '../../../../helpers/formatNumber';
+import { StackProfilePicture } from '../../../../components';
+import { BUSINESS_TYPE_LABEL } from '../../../../constants/general';
 
 const BusinessDetailPage = () => {
   const router = useRouter()
@@ -101,7 +104,7 @@ const BusinessDetailPage = () => {
           }}>
             <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
               <Image
-                style={{ width: 48, height: 48, borderRadius: '50%' }}
+                style={{ width: 48, height: 48, borderRadius: '50%', borderWidth: 1 }}
                 source={`${API_BASE_URL}/pendaftaran/${business?.borrower.business_image}`}
                 defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
               />
@@ -113,7 +116,7 @@ const BusinessDetailPage = () => {
                   {business?.borrower.address}
                 </Text>
                 <Text style={{ color: '#000000', fontSize: 12, fontWeight: 300 }}>
-                  {business?.borrower.business_type}
+                  {BUSINESS_TYPE_LABEL[business?.borrower.business_type]}
                 </Text>
               </View>
             </View>
@@ -124,10 +127,12 @@ const BusinessDetailPage = () => {
             <View style={{
               flex: 1,
               flexDirection: 'row',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingVertical: 8
             }}>
               <View>
-                <Text>Test</Text>
+                <StackProfilePicture fundingLenders={business?.fundinglenders} />
               </View>
               <View>
                 <Text style={{ color: '#076E5B', fontWeight: 300 }}>
@@ -141,6 +146,11 @@ const BusinessDetailPage = () => {
 
             <View style={{ borderBottomColor: '#D9D9D9', borderBottomWidth: StyleSheet.hairlineWidth, marginTop: 4, marginBottom: 16 }}
             />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+              <Text style={{ fontWeight: 500, fontSize: 12 }}>Total Pendanaan Dibutuhkan:</Text>
+              <Text style={{ fontWeight: 300, fontSize: 12 }}>{formatCurrencyRp(business?.borrower.borrower_first_submission)}</Text>
+            </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text style={{ fontWeight: 500, fontSize: 12 }}>Nilai Per Unit Pendanaan:</Text>
@@ -159,9 +169,10 @@ const BusinessDetailPage = () => {
               <Text style={{ fontWeight: 300, fontSize: 12 }}>Per 1 Bulan</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-              <Text style={{ fontWeight: 500, fontSize: 12 }}>Periode Bagi Hasil:</Text>
-              <Text style={{ fontWeight: 300, fontSize: 12 }}>{business?.borrower.duration} Bulan</Text>
+              <Text style={{ fontWeight: 500, fontSize: 12 }}>Penhasila Perbulan:</Text>
+              <Text style={{ fontWeight: 300, fontSize: 12 }}>{formatCurrencyRp(business?.borrower.borrower_monthly_income)}</Text>
             </View>
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text style={{ fontWeight: 500, fontSize: 12 }}>Akad:</Text>
               <Text style={{ fontWeight: 300, fontSize: 12 }}>Mudharabah</Text>
@@ -177,7 +188,7 @@ const BusinessDetailPage = () => {
           <Text style={{ fontSize: 10, fontWeight: 300 }}>Estimasi Bagi Hasil: {business?.borrower.profit_sharing_estimate}%. Sisa {business?.sisa_unit} unit</Text>
         </View>
 
-        <View style={{ display: session ? 'flex' : 'none' }}>
+        <View style={{ display: session && session.role == 'lender' ? 'flex' : 'none' }}>
           <View style={{ padding: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', width: 80, borderRadius: 20, marginBottom: 4 }}>
             <Entypo onPress={() => setUnitCount(unitCount - 1)} name="circle-with-minus" size={20} color="#076E5B" />
             <Text style={{ fontSize: 12 }}>{unitCount}</Text>

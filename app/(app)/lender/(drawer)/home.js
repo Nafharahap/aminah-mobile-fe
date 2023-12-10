@@ -1,34 +1,10 @@
-import { Link, useFocusEffect } from 'expo-router'
-import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList } from 'react-native'
-import { Stack } from "expo-router";
-import { useSession } from '../../../context/auth';
-import { BusinessCard, CartIcon } from "../../../components"
+import { useFocusEffect } from 'expo-router'
+import { View, SafeAreaView, Image, StyleSheet, FlatList, Pressable } from 'react-native'
+import { BusinessCard } from "../../../../components"
 import { useCallback, useState } from 'react';
-import { getListMitra } from '../../../services/publicService';
+import { getListMitra } from '../../../../services/publicService';
 
-function HeaderRight(props) {
-  if (props.session) {
-    return (
-      <CartIcon />
-    )
-  }
-  else {
-    return (
-      <Pressable style={{
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        backgroundColor: '#076E5B',
-        borderRadius: 20,
-        marginRight: 12
-      }}>
-        <Link href={'/auth/login'} style={{ color: '#FFFFFF' }}>Masuk</Link>
-      </ Pressable>
-    )
-  }
-}
-
-export default function BorrowerHome() {
-  const { session } = useSession();
+export default function LenderHome() {
   const [businesses, setBusinesses] = useState([])
   const [page, setPage] = useState(1)
   const [lastPage, setLastPage] = useState(null)
@@ -80,28 +56,13 @@ export default function BorrowerHome() {
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 12, backgroundColor: '#D9D9D9' }}>
-      <Stack.Screen
-        options={{
-          headerShadowVisible: false,
-          headerBackVisible: false,
-          headerBackground: () => {
-            const logoUrl = require('../../../assets/images/headerBg.png')
-            return (
-              <Image
-                style={{ ...StyleSheet.absoluteFill, height: '100%', width: '100%', resizeMode: 'stretch' }}
-                source={logoUrl}
-              />
-            )
-          }
-        }}
-      />
       <FlatList
         data={businesses}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<BusinessCard business={item} index={index} />)}
-        style={{ flex: 1, paddingTop: 12 }}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        style={{ flex: 1, paddingVertical: 12 }}
+        ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
         keyExtractor={item => item.id}
         refreshing={refreshing}
         onRefresh={onRefresh}

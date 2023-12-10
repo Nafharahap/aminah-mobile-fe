@@ -1,11 +1,7 @@
-import React from 'react'
-import { Link } from 'expo-router'
-import { Drawer } from 'expo-router/drawer';
+import { Stack, useRouter } from 'expo-router'
+import { Pressable, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Pressable } from 'react-native';
-import { icons } from '../../../constants'
-import { useSession } from '../../../context/auth';
-import { CartIcon } from '../../../components';
+import React from 'react'
 
 const HeaderBg = () => {
   const logoUrl = require('../../../assets/images/headerBg.png')
@@ -17,71 +13,85 @@ const HeaderBg = () => {
   )
 }
 
-function HeaderRight(props) {
-  if (props.session) {
-    return (
-      <CartIcon />
-    )
-  }
-  else {
-    return (
-      <Pressable style={{
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        backgroundColor: '#076E5B',
-        borderRadius: 20,
-        marginRight: 12
-      }}>
-        <Link href={'/auth/login'} style={{ color: '#FFFFFF' }}>Masuk</Link>
-      </ Pressable>
-    )
-  }
-}
-
-const LenderDrawerLayout = () => {
-  const { session } = useSession()
+const LenderRootLayout = () => {
+  const router = useRouter()
 
   return (
-    <Drawer screenOptions={({ navigation }) => ({
-      drawerStyle: { backgroundColor: '#199B57' },
-      drawerActiveBackgroundColor: '#076E5B',
-      drawerActiveTintColor: 'white',
-      drawerInactiveTintColor: 'white',
-      headerRight: () => <HeaderRight session={session} />,
-      headerLeft: () => {
-        return (
-          <Pressable style={{ marginLeft: 12 }} onPress={navigation.toggleDrawer}>
-            <Image source={icons.burgerNav} />
-          </Pressable>
-        )
-      }
-    })}>
-      <Drawer.Screen
-        name="index"
+    <Stack
+      initialRouteName='(drawer)'
+      screenOptions={{
+        headerLeft: () => {
+          return (
+            <Pressable style={{ marginLeft: 16 }} onPress={router.back}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </Pressable>
+          )
+        },
+        headerBackground: () => <HeaderBg />
+      }}>
+
+      <Stack.Screen
+        name='(drawer)'
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='cart/index'
         options={{
-          drawerLabel: "Beranda",
-          title: "Beranda",
-          headerTitleAlign: 'center',
-          drawerIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />,
-          headerBackground: () => <HeaderBg />
+          headerTitle: 'Keranjang',
+          headerTitleAlign: 'center'
         }}
       />
-      <Drawer.Screen
-        name="profile"
+      <Stack.Screen
+        name='cart/checkout'
         options={{
-          drawerLabel: "Profil Keuangan",
-          title: "Profil",
-          headerTitleAlign: 'center',
-          drawerIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
-          headerBackground: () => <HeaderBg />
+          headerTitle: 'Checkout Keranjang',
+          headerTitleAlign: 'center'
         }}
       />
-      <Drawer.Screen name="mitra" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-      <Drawer.Screen name="(profile)" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-      <Drawer.Screen name="pembayaran" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-      <Drawer.Screen name="cart" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-    </Drawer>
+      <Stack.Screen
+        name='fill/index'
+        options={{
+          headerTitle: 'Lengkapi Profil',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
+        name='mitra/[id]'
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name='mitra/modalCartDetails'
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Detail Keranjang',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
+        name='pembayaran/index'
+        options={{
+          headerTitle: 'Pembayaran',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
+        name='pembayaran/[id]'
+        options={{
+          headerTitle: 'Detail Pembayaran',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
+        name='topup/index'
+        options={{
+          headerTitle: 'Isi Dompet',
+          headerTitleAlign: 'center'
+        }}
+      />
+    </Stack>
   )
 }
 
-export default LenderDrawerLayout
+export default LenderRootLayout

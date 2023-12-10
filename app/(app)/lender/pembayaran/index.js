@@ -39,7 +39,7 @@ const TopUpPage = () => {
 
   const PembayaranItem = ({ item, index }) => {
     const onPembayaranItemPressed = () => {
-      if (!item.status === TRANSACTION_STATUS.SUCCESS) {
+      if (item.status === TRANSACTION_STATUS.WAITING) {
         router.push({ pathname: '/(app)/lender/pembayaran/[:id]', params: { id: item.trx_hash } })
       }
     }

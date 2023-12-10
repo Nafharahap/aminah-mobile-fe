@@ -1,7 +1,7 @@
 import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet, RefreshControl } from "react-native"
 import { Link, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
-import { getProfileBorrower } from "../../../services/borrowerService";
+import { getProfileBorrower } from "../../../../services/borrowerService";
 import { API_BASE_URL } from '@env'
 
 const LinkBorrower = ({ href, disabled, label, bgColor }) => {
@@ -100,7 +100,7 @@ export default function BorrowerProfile() {
             <Image
               style={{ width: 60, height: 60, borderRadius: '50%' }}
               source={`${API_BASE_URL}/pendaftaran/${data?.pengajuan?.business_image}`}
-              defaultSource={require('../../../assets/images/profile-placeholder.jpeg')}
+              defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
             />
             <View>
               <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>

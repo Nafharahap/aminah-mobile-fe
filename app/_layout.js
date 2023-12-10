@@ -18,9 +18,6 @@ const InitialLayout = () => {
         router.replace('/lender')
       }
     }
-    else if (!session && inAuthGroup) {
-      router.replace('/home')
-    }
   }, [session])
 
   return <Slot />
