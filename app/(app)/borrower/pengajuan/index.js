@@ -24,7 +24,7 @@ export default function BorrowerPengajuan() {
   const [amount, setAmount] = useState('');
   const [period, setPeriod] = useState(1);
   const [purpose, setPurpose] = useState('');
-  const [estimateReturn, setEstimateReturn] = useState('');
+  const [estimateReturn, setEstimateReturn] = useState(2);
   const [imageKtp, setImageKtp] = useState(null);
   const [imageSiu, setImageSiu] = useState(null);
   const [imageProduct, setImageProduct] = useState(null);
@@ -44,8 +44,6 @@ export default function BorrowerPengajuan() {
       allowsEditing: false,
       quality: 1,
     });
-
-    console.log(result);
 
     const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
     const blob = await res.blob();

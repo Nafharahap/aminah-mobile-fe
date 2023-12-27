@@ -37,3 +37,19 @@ export const getProfileBorrower = async () => {
 
   return response
 }
+
+export const postBorrowerSubmission = async (data) => {
+  const token = await getToken();
+
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'multipart/form-data',
+  }
+
+  const response = await axios.post(`${API_BASE_URL}/api/mitra/pengajuan`, data, {
+    headers: headers
+  });
+
+  return response
+}
