@@ -138,7 +138,7 @@ const TransactionsPage = () => {
         data={transactions}
         numColumns={1}
         showsVerticalScrollIndicator={false}
-        renderItem={({ index, item }) => (<TransactionItem item={item} index={index} />)}
+        renderItem={({ index, item }) => (<TransactionItem item={item} index={item.id} />)}
         refreshing={refreshing}
         onRefresh={onRefresh}
         style={{ flex: 1, paddingVertical: 16 }}
