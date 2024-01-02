@@ -36,9 +36,25 @@ const BorrowerRootLayout = () => {
       />
 
       <Stack.Screen
-        name='pengajuan'
+        name='pengajuan/index'
         options={{
           headerTitle: 'Pengajuan Mitra',
+          headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name='pengembalian-dana/[id]'
+        options={{
+          headerTitle: 'Detail Pengembalian',
+          headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name='tarik-dana/index'
+        options={{
+          headerTitle: 'Tarik Saldo',
           headerTitleAlign: 'center',
         }}
       />

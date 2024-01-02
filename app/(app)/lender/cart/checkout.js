@@ -62,7 +62,7 @@ const CheckoutPage = () => {
   );
 
   const isSufficient = () => {
-    return Number(sumTotalHarga()) < profile?.sumAmount
+    return Number(sumTotalHarga()) <= profile?.sumAmount
   }
 
   const isProfileCompleted = () => {

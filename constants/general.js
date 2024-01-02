@@ -51,3 +51,30 @@ export const TRANSACTION_STATUS_LABEL = {
   pending: 'Menunggu Konfirmasi',
   success: 'Transaksi Berhasil',
 }
+
+export const TRANSACTION_STATUS_LABEL_COLOR = {
+  waiting: '#2ecb43',
+  pending: '#bcc9cb',
+  success: '#199B57',
+}
+
+export const PENDANAAN_TYPE = {
+  ABORT: '0',
+  FINDING_LENDER: '1',
+  FUNDING_COMPLETED: '2',
+  FUNDING_RETURN_COMPLETED: '3',
+}
+
+export const PENDANAAN_TYPE_LABEL = {
+  0: 'Pendaan Dihentikan',
+  1: 'Proses Pencarian Lender',
+  2: 'Dana Terkumpul',
+  3: 'Pengembalian Dana Selesai',
+}
+
+export const PENDANAAN_TYPE_LABEL_COLOR = {
+  0: '#d42023',
+  1: '#20acf8',
+  2: '#558986',
+  3: '#d7bd70',
+}

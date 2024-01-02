@@ -84,6 +84,13 @@ const LenderRootLayout = () => {
         }}
       />
       <Stack.Screen
+        name='tarik-dana/index'
+        options={{
+          headerTitle: 'Tarik Dana',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
         name='topup/index'
         options={{
           headerTitle: 'Isi Dompet',

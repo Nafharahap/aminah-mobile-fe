@@ -3,6 +3,8 @@ import { Link, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
 import { getProfileBorrower } from "../../../../services/borrowerService";
 import { API_BASE_URL } from '@env'
+import { formatCurrencyRp } from "../../../../helpers/formatNumber";
+import { PENDANAAN_TYPE, PENDANAAN_TYPE_LABEL, PENDANAAN_TYPE_LABEL_COLOR } from "../../../../constants/general";
 
 const LinkBorrower = ({ href, disabled, label, bgColor }) => {
   if (disabled) {
@@ -15,7 +17,7 @@ const LinkBorrower = ({ href, disabled, label, bgColor }) => {
     return (
       <Link href={href} asChild>
         <Pressable style={{ ...styles.button, backgroundColor: bgColor, flex: 1 }}>
-          <Text style={styles.buttonText}>Ajukan Pendanaan</Text>
+          <Text style={styles.buttonText}>{label}</Text>
         </Pressable>
       </Link>
     )
@@ -106,7 +108,7 @@ export default function BorrowerProfile() {
               <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>
                 {data?.user.latest_borrower ? data?.user.latest_borrower?.business_name : 'Belum ada nama usaha'}
               </Text>
-              <Text style={{ color: '#199B57', fontSize: 14, fontWeight: 700 }}>Rp {data?.user.balance}</Text>
+              <Text style={{ color: '#199B57', fontSize: 14, fontWeight: 700 }}>{formatCurrencyRp(data?.user.balance)}</Text>
             </View>
           </View>
 
@@ -154,19 +156,19 @@ export default function BorrowerProfile() {
           <Text style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Ringkasan Pengajuan</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Dana Pengajuan Awal:</Text>
-            <Text>{data?.pengajuan?.borrower_first_submission || '-'}</Text>
+            <Text>{formatCurrencyRp(data?.pengajuan?.borrower_first_submission)}</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Dana Disetujui:</Text>
-            <Text>{data?.funding?.accepted_fund || '-'}</Text>
+            <Text>{formatCurrencyRp(data?.funding?.accepted_fund)}</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Pengembalian Lunas:</Text>
-            <Text>{calculateReturnPaid(data?.transactions) || '-'}</Text>
+            <Text>{formatCurrencyRp(calculateReturnPaid(data?.transactions))}</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Pengembalian Belum Lunas:</Text>
-            <Text>{calculateReturnNotPaid(data?.transactions) || '-'}</Text>
+            <Text>{formatCurrencyRp(calculateReturnNotPaid(data?.transactions))}</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Tujuan Pengajuan:</Text>
@@ -179,7 +181,17 @@ export default function BorrowerProfile() {
           <Text style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Status Pendanaan</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Status: { }</Text>
-            <Text>{data?.funding?.status || '-'}</Text>
+            <Text style={{
+              color: 'white',
+              fontSize: 8,
+              backgroundColor: PENDANAAN_TYPE_LABEL_COLOR[data?.funding?.status],
+              borderRadius: 10,
+              paddingHorizontal: 8,
+              paddingVertical: 2,
+              textAlign: 'center'
+            }}>
+              {PENDANAAN_TYPE_LABEL[data?.funding?.status] || '-'}
+            </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
             <Text>Tanggal Jatuh Tempo: { }</Text>
@@ -189,13 +201,24 @@ export default function BorrowerProfile() {
             <Text>Jumlah Lender Terkumpul: { }</Text>
             <Text>{data?.funding?.fundinglenders.length || '-'}</Text>
           </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+            <Text>Jumlah Dana Terkumpul: { }</Text>
+            <Text>{formatCurrencyRp(data?.funding?.dana_terkumpul)}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+            <Text>Jumlah Dana Terkumpul (%): { }</Text>
+            <Text>{data?.funding?.dana_terkumpul_persen}%</Text>
+          </View>
         </View>
       </ScrollView>
 
       <View style={{ flexDirection: 'row', gap: 8, padding: 12 }}>
         <LinkBorrower href="/borrower/pengajuan" label="Ajukan Pendanaan" bgColor="#6C6C6C" disabled={data?.pengajuan !== null} />
-        <LinkBorrower href="/borrower/pengajuan" label="Tarik Dana" bgColor="#076E5B" disabled={true} />
-        <LinkBorrower href="/borrower/pengajuan" label="Pengembalian Dana" bgColor="#199B57" disabled={true} />
+        <LinkBorrower href="/borrower/tarik-dana" label="Tarik Dana" bgColor="#076E5B" disabled={data?.funding?.status != PENDANAAN_TYPE.FUNDING_COMPLETED || data?.user.balance === 0} />
+        <LinkBorrower href={{
+          pathname: 'borrower/pengembalian-dana/[id]',
+          params: { id: data?.funding?.id }
+        }} label="Pengembalian Dana" bgColor="#199B57" disabled={data?.funding?.status != PENDANAAN_TYPE.FUNDING_COMPLETED} />
       </View>
     </SafeAreaView>
   )

@@ -142,13 +142,13 @@ export default function LenderProfile() {
             </View>
           </Link>
 
-          <Link href={'/(app)/lender/pembayaran'} >
+          <Link href={'/(app)/lender/tarik-dana'} >
             <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
               <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
-                <MaterialIcons name="payments" size={36} color="white" />
+                <MaterialCommunityIcons name="bank-transfer-out" size={36} color="white" />
               </View>
               <View>
-                <Text style={{ color: '#076E5B', fontSize: 16, fontWeight: 700 }}>Pembayaran</Text>
+                <Text style={{ color: '#076E5B', fontSize: 16, fontWeight: 700 }}>Tarik Saldo</Text>
               </View>
               <View>
                 <MaterialCommunityIcons name="chevron-right" size={24} color="black" />

@@ -59,8 +59,9 @@ const Business = ({ business, index }) => {
                 flex: 1,
                 backgroundColor: '#076E5B',
                 borderRadius: 10,
-                paddingHorizontal: 8,
-                paddingVertical: 2
+                paddingHorizontal: 4,
+                paddingVertical: 2,
+                textAlign: 'center'
               }}>
                 {BUSINESS_TYPE_LABEL[Number.isInteger(Number(business?.borrower?.business_type)) ? Number(business?.borrower?.business_type) : 8]}
               </Text>

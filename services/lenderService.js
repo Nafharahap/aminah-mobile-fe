@@ -38,6 +38,36 @@ export const getProfileLender = async () => {
   return response
 }
 
+export const getTarikLenderSaldoInvoice = async () => {
+  const token = await getToken();
+
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`
+  }
+
+  const response = await axios.get(`${API_BASE_URL}/api/lender/saldo/tarik/invoice`, {
+    headers: headers
+  });
+
+  return response
+}
+
+export const getListTransaksiLender = async ({ page = 1 } = {}) => {
+  const token = await getToken();
+
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`
+  }
+
+  const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi?page=${page}`, {
+    headers: headers
+  });
+
+  return response
+}
+
 export const postLenderSubmission = async (data) => {
   const token = await getToken();
 
@@ -64,6 +94,22 @@ export const postCheckoutCart = async (data) => {
   }
 
   const response = await axios.post(`${API_BASE_URL}/api/lender/checkout-api`, data, {
+    headers: headers
+  });
+
+  return response
+}
+
+export const postLenderWithdrawBallance = async (data) => {
+  const token = await getToken();
+
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'multipart/form-data',
+  }
+
+  const response = await axios.post(`${API_BASE_URL}/api/lender/saldo/tarik`, data, {
     headers: headers
   });
 
