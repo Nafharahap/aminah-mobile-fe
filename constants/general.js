@@ -1,4 +1,5 @@
 export const TRANSACTION_TYPE = {
+  SEMUUA: 0,
   PENGISIAN_SALDO_LENDER: 1,
   PEMBAYARAN_BAGI_HASIL: 2,
   PENARIKAN_SALDO_LENDER: 3,
@@ -9,12 +10,13 @@ export const TRANSACTION_TYPE = {
 }
 
 export const TRANSACTION_TYPE_LABEL = {
+  0: 'Semua',
   1: 'Pengisian Saldo Lender',
   2: 'Pembayaran Bagi Hasil',
   3: 'Penarikan Saldo Lender',
   4: 'Penarikan Pendanaan',
   5: 'Penarikan Dana Admin',
-  6: 'Pembayaran Pendanaan Lender',
+  6: 'Pembayaran Pembelian Unit',
   7: 'Pengembalian Pendanaan',
 }
 
@@ -47,14 +49,14 @@ export const TRANSACTION_STATUS = {
 }
 
 export const TRANSACTION_STATUS_LABEL = {
-  waiting: 'Belum Bayar',
+  waiting: 'Belum Dibayar',
   pending: 'Menunggu Konfirmasi',
   success: 'Transaksi Berhasil',
 }
 
 export const TRANSACTION_STATUS_LABEL_COLOR = {
-  waiting: '#2ecb43',
-  pending: '#bcc9cb',
+  waiting: '#F00000',
+  pending: '#F2D32E',
   success: '#199B57',
 }
 
@@ -73,8 +75,8 @@ export const PENDANAAN_TYPE_LABEL = {
 }
 
 export const PENDANAAN_TYPE_LABEL_COLOR = {
-  0: '#d42023',
-  1: '#20acf8',
-  2: '#558986',
-  3: '#d7bd70',
+  0: '#F00000',
+  1: '#E4DE3F',
+  2: '#199B57',
+  3: '#000000',
 }

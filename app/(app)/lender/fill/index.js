@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, Platform } from "react-native";
 import Checkbox from "expo-checkbox";
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -28,32 +28,52 @@ export default function FilProfilePage() {
   const [check, setCheck] = useState(false);
 
   const pickImage = async (typeInput) => {
-    // No permissions request is necessary for launching the image library
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      base64: true,
-      allowsEditing: false,
-      quality: 1,
-    });
-
-    const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
-    const blob = await res.blob();
-    const type = blob.type.split('/').pop()
-    const file = new File([blob], `file.${type}`);
-
-    if (!result.canceled) {
-      if (typeInput === 'diri') {
-        setFileDiri(file);
-      } else if (typeInput === 'ktp') {
-        setFileKtp(file);
+    try {
+      // No permissions request is necessary for launching the image library
+      let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (permissionResult.granted === false) {
+        alert("Permission to access camera roll is required!");
+        return;
       }
+
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: true,
+        allowsEditing: false,
+        quality: 1,
+      });
+
+      let file = undefined
+      if (Platform.OS === 'web') {
+        const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
+        const blob = await res.blob();
+        const type = blob.type.split('/').pop()
+        file = new File([blob], `file.${type}`);
+      } else {
+        let localUri = result.assets[0].uri;
+        let filename = localUri.split('/').pop();
+
+        // Infer the type of the image
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+        file = { uri: localUri, name: filename, type }
+      }
+
+
+      if (!result.canceled) {
+        if (typeInput === 'diri') {
+          setFileDiri(file);
+        } else if (typeInput === 'ktp') {
+          setFileKtp(file);
+        }
+      } else {
+        alert('Anda tidak memilih gambar');
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error.message)
     }
+
   };
 
   const onRegisterUmkmButtonPressed = async () => {

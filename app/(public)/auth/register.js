@@ -28,7 +28,7 @@ export default function Register() {
           <Text style={{ textAlign: 'center', color: '#076E5B' }}>atau</Text>
           <Link href={'/auth/register-lender'} asChild>
             <Pressable style={{ ...styles.buttonRegister, minWidth: 220 }}>
-              <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar Sebagai Pemodal</Text>
+              <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar Sebagai Lender</Text>
             </Pressable>
           </Link>
         </View>

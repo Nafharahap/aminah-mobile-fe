@@ -60,15 +60,15 @@ export default function BorrowerHome() {
         data={businesses}
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        renderItem={({ index, item }) => (<BusinessCard business={item} index={item.id} />)}
-        style={{ flex: 1, paddingVertical: 12 }}
-        ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
+        renderItem={({ index, item }) => (<BusinessCard business={item} index={index} />)}
+        style={{ flex: 1, paddingVertical: 20 }}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={item => item.id}
         refreshing={refreshing}
         onRefresh={onRefresh}
         onEndReached={getMoreData}
         onEndReachedThreshold={0.1}
-        contentContainerStyle={{ paddingBottom: 40, marginTop: -12 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
       />
     </SafeAreaView >
   );

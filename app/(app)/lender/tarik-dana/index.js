@@ -3,6 +3,7 @@ import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet 
 import { useCallback, useState } from "react";
 import CurrencyInput from 'react-native-currency-input';
 import { getTarikLenderSaldoInvoice, postLenderWithdrawBallance } from "../../../../services/lenderService";
+import { formatCurrencyRp } from "../../../../helpers/formatNumber";
 
 export default function LenderTarikDana() {
   const router = useRouter()
@@ -21,10 +22,12 @@ export default function LenderTarikDana() {
         setBankName(data?.lender.bank_name)
         setpPemilikRekeningName(data?.lender.account_name)
         setpNomorRekening(data?.lender.account_number)
-        setpJumlahMaksimalSaldo(data?.sumAmmount)
+        setpJumlahMaksimalSaldo(data?.lenderSumAmmount)
       }
     } catch (error) {
-      alert(error)
+      console.log(error.message)
+      alert(error.message)
+      router.back()
     }
   }
 
@@ -98,7 +101,7 @@ export default function LenderTarikDana() {
           </View>
 
           <View style={{ marginTop: 10 }}>
-            <Text style={styles.textLabel}>Jumlah Saldo Ditarik</Text>
+            <Text style={styles.textLabel}>Jumlah Saldo Ditarik (Saldo anda: {formatCurrencyRp(jumlahMaksimalSaldo ? jumlahMaksimalSaldo : 0)})</Text>
             <CurrencyInput
               style={styles.textInput}
               onChangeValue={setpJumlahSaldo}

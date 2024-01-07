@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'expo-router'
 import { Drawer } from 'expo-router/drawer';
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Pressable } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 import { icons } from '../../../../constants'
 import { useSession } from '../../../../context/auth';
 import { CartIcon } from '../../../../components';

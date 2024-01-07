@@ -45,10 +45,21 @@ export default function BorrowerPengajuan() {
       quality: 1,
     });
 
-    const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
-    const blob = await res.blob();
-    const type = blob.type.split('/').pop()
-    const file = new File([blob], `file.${type}`);
+    let file = undefined
+    if (Platform.OS === 'web') {
+      const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
+      const blob = await res.blob();
+      const type = blob.type.split('/').pop()
+      file = new File([blob], `file.${type}`);
+    } else {
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split('/').pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      file = { uri: localUri, name: filename, type }
+    }
 
     if (!result.canceled) {
       if (typeInput === 'ktp') {

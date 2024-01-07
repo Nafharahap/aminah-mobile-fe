@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router'
-import { Pressable, Image } from 'react-native'
+import { Pressable, Image, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 
@@ -18,17 +18,7 @@ const LenderRootLayout = () => {
 
   return (
     <Stack
-      initialRouteName='(drawer)'
-      screenOptions={{
-        headerLeft: () => {
-          return (
-            <Pressable style={{ marginLeft: 16 }} onPress={router.back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </Pressable>
-          )
-        },
-        headerBackground: () => <HeaderBg />
-      }}>
+      initialRouteName='(drawer)'>
 
       <Stack.Screen
         name='(drawer)'
@@ -37,6 +27,14 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='cart/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Keranjang',
           headerTitleAlign: 'center'
         }}
@@ -44,6 +42,14 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='cart/checkout'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Checkout Keranjang',
           headerTitleAlign: 'center'
         }}
@@ -51,6 +57,14 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='fill/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Lengkapi Profil',
           headerTitleAlign: 'center'
         }}
@@ -64,14 +78,30 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='mitra/modalCartDetails'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           presentation: 'modal',
-          headerTitle: 'Detail Keranjang',
+          headerTitle: 'Rincian Pembelian',
           headerTitleAlign: 'center'
         }}
       />
       <Stack.Screen
         name='pembayaran/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Pembayaran',
           headerTitleAlign: 'center'
         }}
@@ -79,13 +109,29 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='pembayaran/[id]'
         options={{
-          headerTitle: 'Detail Pembayaran',
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
+          headerTitle: 'Rincian Pembayaran',
           headerTitleAlign: 'center'
         }}
       />
       <Stack.Screen
         name='tarik-dana/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Tarik Dana',
           headerTitleAlign: 'center'
         }}
@@ -93,7 +139,30 @@ const LenderRootLayout = () => {
       <Stack.Screen
         name='topup/index'
         options={{
-          headerTitle: 'Isi Dompet',
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
+          headerTitle: 'Isi Saldo',
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Stack.Screen
+        name='transaction/[trx_hash]'
+        options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
+          headerTitle: 'Rincian Transaksi',
           headerTitleAlign: 'center'
         }}
       />

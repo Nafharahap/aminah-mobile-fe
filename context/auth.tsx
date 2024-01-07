@@ -22,15 +22,14 @@ export function SessionProvider(props) {
               email,
               password
             })
-
             const user = response.data.user
-            console.log('Login Gagal');
+            console.log('Login Berhasil');
             alert('Login Berhasil')
             setSession(user);
           } catch (error) {
-            console.log('Login Gagal');
             const errorMessage = error.response.data.message
-            alert(`Login Gagal ${errorMessage}`)
+            console.log(`Login Gagal, ${errorMessage}`);
+            alert(`Login Gagal, ${errorMessage}`)
           }
 
         },

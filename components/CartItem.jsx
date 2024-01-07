@@ -4,9 +4,12 @@ import { formatCurrencyRp } from '../helpers/formatNumber';
 import { Entypo } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { useCart } from '../context/cart';
+import { getDetailMitra } from '../services/publicService';
 
 const CartItem = ({ item, index }) => {
+  console.log(item);
   const { updateCart, removeCartItem } = useCart()
+  const [funding, setFunding] = useState()
 
   const onButtonRemovePressed = () => {
     const quantity = item.quantity - 1
@@ -18,12 +21,28 @@ const CartItem = ({ item, index }) => {
   }
 
   const onButtonAddPressed = () => {
-    updateCart(item.id, item.quantity + 1, item.selected)
+    if (item.quantity < funding.sisa_unit) {
+      updateCart(item.id, item.quantity + 1, item.selected)
+    }
   }
 
   const onToggleSelectPressed = () => {
     updateCart(item.id, item.quantity, !item.selected)
   }
+
+  const getFundingDetail = async (id) => {
+    try {
+      const response = await getDetailMitra(id)
+      setFunding(response.data.payload.funding)
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getFundingDetail(item.id)
+  }, [item.id])
 
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 8, padding: 12 }}>
@@ -37,6 +56,7 @@ const CartItem = ({ item, index }) => {
             <Entypo onPress={onButtonAddPressed} name="circle-with-plus" size={20} color="#076E5B" />
           </View>
         </View>
+        <Text>Sisa Unit: {funding?.sisa_unit}</Text>
       </View>
 
       <View>

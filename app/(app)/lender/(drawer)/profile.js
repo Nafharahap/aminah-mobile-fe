@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet, RefreshControl, ImageBackground } from "react-native"
+import { View, SafeAreaView, Text, Pressable, Image, ScrollView, StyleSheet, RefreshControl, ImageBackground, Dimensions } from "react-native"
 import { Link, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
 import { API_BASE_URL } from '@env'
@@ -19,7 +19,7 @@ export default function LenderProfile() {
         setProfile(response.data.payload.user)
       }
     } catch (error) {
-      alert(error)
+      alert(error.message)
     } finally {
       setRefreshing(false)
     }
@@ -63,8 +63,9 @@ export default function LenderProfile() {
         <ImageBackground source={require('../../../../assets/images/headerBg.png')} style={{ height: 'auto', width: '100%' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16 }}>
             <Image
-              style={{ width: 96, height: 96, borderRadius: '50%' }}
-              source={`${API_BASE_URL}/profile/${profile?.lender?.lender_image}`}
+              style={{ width: 96, height: 96, borderRadius: 96 / 2 }}
+              source={{ uri: `${API_BASE_URL}/profile/${profile?.lender?.lender_image}` }}
+              resizeMode="cover"
               defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
             />
             <View style={{ marginLeft: 20, flex: 1 }}>
@@ -89,7 +90,10 @@ export default function LenderProfile() {
         <View style={{ flex: 1, padding: 16 }}>
 
           <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-            <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+            <View style={{
+              height: Dimensions.get('window').height * 0.1,
+              width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+            }}>
               <MaterialIcons name="email" size={36} color="#FFFFFF" />
             </View>
             <View>
@@ -99,7 +103,10 @@ export default function LenderProfile() {
           </View>
 
           <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-            <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+            <View style={{
+              height: Dimensions.get('window').height * 0.1,
+              width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+            }}>
               <FontAwesome5 name="address-card" size={32} color="white" />
             </View>
             <View>
@@ -109,7 +116,10 @@ export default function LenderProfile() {
           </View>
 
           <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-            <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+            <View style={{
+              height: Dimensions.get('window').height * 0.1,
+              width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+            }}>
               <FontAwesome name="bank" size={32} color="white" />
             </View>
             <View>
@@ -119,18 +129,24 @@ export default function LenderProfile() {
           </View>
 
           <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-            <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+            <View style={{
+              height: Dimensions.get('window').height * 0.1,
+              width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+            }}>
               <MaterialIcons name="switch-account" size={32} color="white" />
             </View>
             <View>
               <Text style={{ color: '#076E5B', fontSize: 16, fontWeight: 700 }}>Nomor Rekening</Text>
               <Text style={{ fontSize: 12, fontWeight: 300 }}>{profile?.lender?.account_number}</Text>
             </View>
-          </View>
+          </View >
 
-          <Link href={'/(app)/lender/topup'} >
-            <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-              <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+          <Link href={'/(app)/lender/topup'} style={{ marginBottom: 28 }} >
+            <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+              <View style={{
+                height: Dimensions.get('window').height * 0.1,
+                width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+              }}>
                 <MaterialCommunityIcons name="bank-transfer-in" size={36} color="white" />
               </View>
               <View>
@@ -140,11 +156,14 @@ export default function LenderProfile() {
                 <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
               </View>
             </View>
-          </Link>
+          </Link >
 
-          <Link href={'/(app)/lender/tarik-dana'} >
-            <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 }}>
-              <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+          <Link href={'/(app)/lender/tarik-dana'} style={{ marginBottom: 28 }} >
+            <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+              <View style={{
+                height: Dimensions.get('window').height * 0.1,
+                width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+              }}>
                 <MaterialCommunityIcons name="bank-transfer-out" size={36} color="white" />
               </View>
               <View>
@@ -154,19 +173,22 @@ export default function LenderProfile() {
                 <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
               </View>
             </View>
-          </Link>
+          </Link >
 
           <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
-            <View style={{ borderRadius: '50%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12 }}>
+            <View style={{
+              height: Dimensions.get('window').height * 0.1,
+              width: Dimensions.get('window').height * 0.1, justifyContent: 'center', borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2), alignItems: 'center', backgroundColor: '#D9D9D9', padding: 12
+            }}>
               <Entypo name="log-out" size={32} color="white" />
             </View>
             <Pressable onPress={onLogoutPressed}>
               <Text style={{ color: '#076E5B', fontSize: 16, fontWeight: 700 }}>Keluar</Text>
             </Pressable>
-          </View>
-        </View>
-      </ScrollView>
+          </View >
+        </View >
+      </ScrollView >
 
-    </SafeAreaView>
+    </SafeAreaView >
   )
 }

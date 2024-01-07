@@ -11,8 +11,12 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onButtonLoginPressed = async () => {
-    signIn(email, password);
+  const onButtonLoginPressed = () => {
+    try {
+      signIn(email, password);
+    } catch (error) {
+      throw Error(error.message)
+    }
   }
 
   return (

@@ -24,63 +24,79 @@ async function getToken() {
 }
 
 export const getListPembayaran = async () => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const getDetailPembayaran = async (id) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar/detail/${id}`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar/detail/${id}`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postIsiDompet = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/isi`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/isi`, data, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postBayar = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/bayar`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/bayar`, data, {
-    headers: headers
-  });
-
-  return response
 }

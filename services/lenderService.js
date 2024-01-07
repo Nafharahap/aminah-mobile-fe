@@ -24,94 +24,160 @@ async function getToken() {
 }
 
 export const getProfileLender = async () => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/profile`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/lender/profile`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const getTarikLenderSaldoInvoice = async () => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/saldo/tarik/invoice`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error.response.data.message)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/lender/saldo/tarik/invoice`, {
-    headers: headers
-  });
-
-  return response
 }
 
-export const getListTransaksiLender = async ({ page = 1 } = {}) => {
-  const token = await getToken();
+export const getListTransaksiLender = async ({ page = 1, type = '1,3,6' } = {}) => {
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    if (type == 0) {
+      type = '1,3,6'
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi?page=${page}&type=${type}`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
+}
 
-  const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi?page=${page}`, {
-    headers: headers
-  });
+export const getDetailTransaksiLender = async (trx_hash) => {
+  try {
+    const token = await getToken();
 
-  return response
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi/${trx_hash}`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export const getPendanaanListLender = async (borrowerId) => {
+  try {
+    const token = await getToken();
+
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/mitra/pendanaan/bayar/lender/${borrowerId}`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error.message)
+  }
 }
 
 export const postLenderSubmission = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/lender/profile/update`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/lender/profile/update`, data, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postCheckoutCart = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/lender/checkout-api`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/lender/checkout-api`, data, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postLenderWithdrawBallance = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/lender/saldo/tarik`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/lender/saldo/tarik`, data, {
-    headers: headers
-  });
-
-  return response
 }

@@ -63,7 +63,7 @@ const ReturnProfitPage = () => {
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
             <Text style={{ fontSize: 12, fontWeight: 700 }}>Keterangan:</Text>
-            <Text style={{ fontSize: 12, fontWeight: 700 }}>{diffForHumans(item.transaction_date)} bulan dari sekarang</Text>
+            <Text style={{ fontSize: 12, fontWeight: 700 }}>{diffForHumans(item.transaction_date)}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -82,7 +82,7 @@ const ReturnProfitPage = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#D9D9D9' }}>
+    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 16, backgroundColor: '#D9D9D9' }}>
       <FlatList
         data={data}
         numColumns={1}
@@ -90,7 +90,7 @@ const ReturnProfitPage = () => {
         renderItem={({ index, item }) => (<PembayaranItem item={item} index={index} />)}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        style={{ flex: 1, paddingVertical: 16 }}
+        style={{ flex: 1, marginTop: -12 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item) => item.trx_hash}
       />

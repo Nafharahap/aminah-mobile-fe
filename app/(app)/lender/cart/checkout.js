@@ -96,7 +96,7 @@ const CheckoutPage = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#D9D9D9' }}>
       <ScrollView
-        style={{ padding: 16 }}
+        style={{ paddingHorizontal: 16, height: '80%' }}
         showsVerticalScrollIndicator={false}
       >
         <View style={{ backgroundColor: '#FFFFFF', padding: 12, borderRadius: 8 }}>
@@ -141,7 +141,7 @@ const CheckoutPage = () => {
 
       </ScrollView>
 
-      <View style={{ backgroundColor: '#FFFFFF', flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{ height: '20%', flex: 1, backgroundColor: '#FFFFFF', flexDirection: 'row', justifyContent: 'space-between' }}>
         <View style={{ flex: 8, paddingHorizontal: 16, paddingVertical: 8 }}>
           <Text style={{ fontSize: 12, fontWeight: 500 }}>Total Pembayaran:</Text>
           <Text style={{ fontSize: 20, fontWeight: 700, color: '#199B57' }}>{formatCurrencyRp(sumTotalHarga())}</Text>

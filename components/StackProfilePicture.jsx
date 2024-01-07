@@ -10,8 +10,8 @@ const StackProfilePicture = ({ fundingLenders }) => {
           if (index < 4) {
             return (
               <Image
-                style={{ marginLeft: index !== 0 ? -16 : 0, width: 40, height: 40, borderRadius: '50%', borderWidth: 1 }}
-                source={`${API_BASE_URL}/profile/${fundingLender.lender.lender_image}`}
+                style={{ marginLeft: index !== 0 ? -16 : 0, width: 40, height: 40, borderRadius: 40 / 2, borderWidth: 1 }}
+                source={{ uri: `${API_BASE_URL}/profile/${fundingLender.lender.lender_image}` }}
                 defaultSource={require('../assets/images/profile-placeholder.jpeg')}
                 key={index}
               />
@@ -24,7 +24,7 @@ const StackProfilePicture = ({ fundingLenders }) => {
         fundingLenders?.length > 4
           ? (
             <View
-              style={{ marginLeft: -16, width: 40, height: 40, borderRadius: '50%', backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', borderWidth: 1 }}
+              style={{ marginLeft: -16, width: 40, height: 40, borderRadius: 40 / 2, backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', borderWidth: 1 }}
             >
               <Text style={{ fontSize: 12, fontWeight: 600, textAlign: 'center' }}>{fundingLenders?.length - 4}+</Text>
             </View>

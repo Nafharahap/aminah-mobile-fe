@@ -31,13 +31,26 @@ const DetailPembayaran = () => {
       quality: 1,
     });
 
-    const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
-    const blob = await res.blob();
-    const type = blob.type.split('/').pop()
-    const file = new File([blob], `file.${type}`);
+    let file = undefined
+    if (Platform.OS === 'web') {
+      const res = await fetch(`data:image/png;base64,${result.assets[0].base64}`);
+      const blob = await res.blob();
+      const type = blob.type.split('/').pop()
+      file = new File([blob], `file.${type}`);
+    } else {
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split('/').pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      file = { uri: localUri, name: filename, type }
+    }
 
     if (!result.canceled) {
       setFileTrx(file)
+    } else {
+      alert('File belum dipilih!')
     }
   };
 
@@ -76,6 +89,10 @@ const DetailPembayaran = () => {
     }
   }
 
+  const onRefresh = useCallback(() => {
+    getData();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#D9D9D9' }}>
       <ScrollView
@@ -84,7 +101,7 @@ const DetailPembayaran = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={{ flex: 1, paddingVertical: 16 }}>
+        <View style={{ flex: 1 }}>
           <View style={{ padding: 16, backgroundColor: 'white', borderRadius: 8 }}>
             <Text style={{ fontSize: 16, fontWeight: 700 }}>Rincian Nomor Rekening</Text>
 

@@ -24,94 +24,118 @@ async function getToken() {
 }
 
 export const getProfileBorrower = async () => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/mitra/profile`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/mitra/profile`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postBorrowerSubmission = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/mitra/pengajuan`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/mitra/pengajuan`, data, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const getTarikBorrowerSaldoInvoice = async () => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/mitra/saldo/tarik/invoice`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/mitra/saldo/tarik/invoice`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const getPendanaanList = async (id) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/api/mitra/pendanaan/bayar/${id}`, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error.message)
   }
-
-  const response = await axios.get(`${API_BASE_URL}/api/mitra/pendanaan/bayar/${id}`, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postBorrowerWithdrawBallance = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/mitra/saldo/tarik`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/mitra/saldo/tarik`, data, {
-    headers: headers
-  });
-
-  return response
 }
 
 export const postReturnPendanaan = async (data) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/mitra/pendanaan/bayar`, data, {
+      headers: headers
+    });
+
+    return response
+  } catch (error) {
+    throw Error(error)
   }
-
-  const response = await axios.post(`${API_BASE_URL}/api/mitra/pendanaan/bayar`, data, {
-    headers: headers
-  });
-
-  return response
 }

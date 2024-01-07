@@ -100,8 +100,8 @@ export default function BorrowerProfile() {
 
           <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
             <Image
-              style={{ width: 60, height: 60, borderRadius: '50%' }}
-              source={`${API_BASE_URL}/pendaftaran/${data?.pengajuan?.business_image}`}
+              style={{ width: 60, height: 60, borderRadius: 60 / 2 }}
+              source={{ uri: `${API_BASE_URL}/pendaftaran/${data?.pengajuan?.business_image}` }}
               defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
             />
             <View>

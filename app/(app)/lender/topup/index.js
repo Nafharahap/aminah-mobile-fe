@@ -1,10 +1,11 @@
 import { View, Text, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlatList } from 'react-native-gesture-handler'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
-import { useRouter } from 'expo-router'
+import { useFocusEffect, useRouter } from 'expo-router'
 import { postIsiDompet } from '../../../../services/dompetService'
+import { getProfileLender } from '../../../../services/lenderService'
 
 const DATA = [
   100000,
@@ -21,6 +22,7 @@ const DATA = [
 
 const TopUpPage = () => {
   const [nominal, setNominal] = useState(null)
+  const [profile, setProfile] = useState(null)
   const router = useRouter()
 
   const onPressed = (item) => {
@@ -35,8 +37,33 @@ const TopUpPage = () => {
     )
   }
 
+  const getData = async () => {
+    try {
+      const response = await getProfileLender()
+      if (response) {
+        setProfile(response.data.payload.user)
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
+
+  const isProfileCompleted = () => {
+    return profile?.checkProfile
+  }
+
   const onTopupPressed = async () => {
     try {
+      if (!isProfileCompleted()) {
+        throw Error('Silahkan Lengkapi Profil Terlebih Dahulu')
+      }
+
       const data = new FormData();
       data.append('product', nominal)
 
@@ -46,8 +73,7 @@ const TopUpPage = () => {
       alert('Segera Lakukan Pembayaran')
       router.back()
     } catch (error) {
-      console.log('Request Gagal', error)
-      alert('Request Gagal')
+      alert(error.message)
     }
   }
 
@@ -58,8 +84,8 @@ const TopUpPage = () => {
         numColumns={1}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<NominalItem item={item} index={index} onClick={onPressed} />)}
-        style={{ flex: 1, paddingVertical: 12 }}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        style={{ flex: 1, marginTop: -20 }}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item, index) => index}
         ListHeaderComponent={() => (
           <View style={{ marginBottom: 16 }}>

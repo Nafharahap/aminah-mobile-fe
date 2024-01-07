@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ImageBackground, Image, Pressable, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, ImageBackground, Image, Pressable, StyleSheet, TextInput } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useRouter, useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { getDetailMitra } from '../../../../services/publicService';
@@ -8,7 +8,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useSession } from '../../../../context/auth';
 import { formatCurrencyRp } from '../../../../helpers/formatNumber';
 import { StackProfilePicture } from '../../../../components';
-import { BUSINESS_TYPE_LABEL } from '../../../../constants/general';
+import { BUSINESS_TYPE_LABEL, PENDANAAN_TYPE, PENDANAAN_TYPE_LABEL, PENDANAAN_TYPE_LABEL_COLOR } from '../../../../constants/general';
 
 const BusinessDetailPage = () => {
   const router = useRouter()
@@ -48,6 +48,18 @@ const BusinessDetailPage = () => {
     router.push({ pathname: '/(app)/lender/mitra/modalCartDetails', params: { id: business.id, count: unitCount } })
   }
 
+  const subtractCount = () => {
+    if (unitCount > 1) {
+      setUnitCount(unitCount - 1)
+    }
+  }
+
+  const addCount = () => {
+    if (unitCount < business?.sisa_unit) {
+      setUnitCount(unitCount + 1)
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <ScrollView
@@ -60,12 +72,12 @@ const BusinessDetailPage = () => {
           <View style={{
             flex: 1,
             width: '100%',
-            height: 260,
-            maxHeight: 260,
-            minHeight: 260
+            height: 360,
+            maxHeight: 360,
+            minHeight: 360
           }}>
             <ImageBackground
-              source={require('../../../../assets/images/profile-placeholder.jpeg')}
+              source={{ uri: `${API_BASE_URL}/pendaftaran/${business?.borrower.business_image}` }}
               resizeMode="cover"
               style={{
                 flex: 1,
@@ -80,36 +92,41 @@ const BusinessDetailPage = () => {
                   width: 40,
                   height: 40,
                   position: 'absolute',
-                  top: 16,
+                  top: 32,
                   left: 16
                 }}
               >
                 <Ionicons name="arrow-back" size={32} color="black" />
               </Pressable>
-              <Text style={{
+              <View style={{
                 position: 'absolute',
                 bottom: 32,
-                left: 24,
-                textAlign: 'justify',
-                fontWeight: 'bold',
-                fontSize: 32
+                left: 0,
+                paddingLeft: 16,
+                paddingRight: 16,
+                paddingVertical: 8,
+                borderTopRightRadius: 5,
+                borderBottomRightRadius: 5,
+                backgroundColor: 'rgba(255, 255, 255, 0.70)'
               }}>
-                {business?.borrower.business_name}
-              </Text>
+                <Text style={{
+                  textAlign: 'justify',
+                  fontWeight: 'bold',
+                  fontSize: 32,
+                  color: '#076e5b'
+                }}>
+                  {business?.borrower.business_name}
+                </Text>
+              </View>
             </ImageBackground>
           </View>
           <View style={{
             flex: 1,
             padding: 16
           }}>
-            <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
-              <Image
-                style={{ width: 48, height: 48, borderRadius: '50%', borderWidth: 1 }}
-                source={`${API_BASE_URL}/pendaftaran/${business?.borrower.business_image}`}
-                defaultSource={require('../../../../assets/images/profile-placeholder.jpeg')}
-              />
+            <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center', justifyContent: 'space-between' }}>
               <View>
-                <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }}>
+                <Text style={{ color: '#076e5b', fontSize: 16, fontWeight: 'bold' }}>
                   {business?.borrower.name}
                 </Text>
                 <Text style={{ color: '#000000', fontSize: 12, fontWeight: 300 }}>
@@ -118,6 +135,10 @@ const BusinessDetailPage = () => {
                 <Text style={{ color: '#000000', fontSize: 12, fontWeight: 300 }}>
                   {BUSINESS_TYPE_LABEL[business?.borrower.business_type]}
                 </Text>
+              </View>
+
+              <View style={{ borderWidth: 1, borderRadius: 8, borderColor: PENDANAAN_TYPE_LABEL_COLOR[business?.status], paddingHorizontal: 12, paddingVertical: 8 }}>
+                <Text style={{ color: PENDANAAN_TYPE_LABEL_COLOR[business?.status], fontSize: 16, fontWeight: 700 }}>{PENDANAAN_TYPE_LABEL[business?.status]}</Text>
               </View>
             </View>
 
@@ -169,13 +190,18 @@ const BusinessDetailPage = () => {
               <Text style={{ fontWeight: 300, fontSize: 12 }}>Per 1 Bulan</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-              <Text style={{ fontWeight: 500, fontSize: 12 }}>Penhasila Perbulan:</Text>
+              <Text style={{ fontWeight: 500, fontSize: 12 }}>Penghasilan Perbulan:</Text>
               <Text style={{ fontWeight: 300, fontSize: 12 }}>{formatCurrencyRp(business?.borrower.borrower_monthly_income)}</Text>
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text style={{ fontWeight: 500, fontSize: 12 }}>Akad:</Text>
               <Text style={{ fontWeight: 300, fontSize: 12 }}>Mudharabah</Text>
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+              <Text style={{ fontWeight: 500, fontSize: 12 }}>Progres Pendanaan:</Text>
+              <Text style={{ fontWeight: 300, fontSize: 12 }}>{business?.dana_terkumpul_persen}%</Text>
             </View>
           </View>
         </View>
@@ -190,12 +216,12 @@ const BusinessDetailPage = () => {
 
         <View style={{ display: session && session.role == 'lender' ? 'flex' : 'none' }}>
           <View style={{ padding: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', width: 80, borderRadius: 20, marginBottom: 4 }}>
-            <Entypo onPress={() => setUnitCount(unitCount - 1)} name="circle-with-minus" size={20} color="#076E5B" />
+            <Entypo onPress={subtractCount} name="circle-with-minus" size={20} color="#076E5B" />
             <Text style={{ fontSize: 12 }}>{unitCount}</Text>
-            <Entypo onPress={() => setUnitCount(unitCount + 1)} name="circle-with-plus" size={20} color="#076E5B" />
+            <Entypo onPress={addCount} name="circle-with-plus" size={20} color="#076E5B" />
           </View>
-          <Pressable style={{ paddingHorizontal: 16, paddingVertical: 2, width: 80, borderRadius: 20, backgroundColor: '#076E5B' }} onPress={onButtonBuyPressed}>
-            <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 500 }}>Beli</Text>
+          <Pressable style={{ paddingHorizontal: 16, paddingVertical: 2, width: 80, borderRadius: 20, backgroundColor: business?.sisa_unit > 0 ? '#076E5B' : '#6C6C6C' }} onPress={onButtonBuyPressed} disabled={business?.sisa_unit === 0}>
+            <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 500, opacity: business?.sisa_unit > 0 ? 1 : 0.3 }}>Beli</Text>
           </Pressable>
         </View>
       </View>

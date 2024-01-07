@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router'
-import { Pressable, Image } from 'react-native'
+import { Pressable, Image, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 
@@ -19,17 +19,7 @@ const BorrowerRootLayout = () => {
   return (
     <Stack
       initialRouteName='(drawer)'
-      screenOptions={{
-        headerLeft: () => {
-          return (
-            <Pressable style={{ marginLeft: 16 }} onPress={router.back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </Pressable>
-          )
-        },
-        headerBackground: () => <HeaderBg />
-      }}>
-
+    >
       <Stack.Screen
         name='(drawer)'
         options={{ headerShown: false }}
@@ -38,6 +28,14 @@ const BorrowerRootLayout = () => {
       <Stack.Screen
         name='pengajuan/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Pengajuan Mitra',
           headerTitleAlign: 'center',
         }}
@@ -46,7 +44,31 @@ const BorrowerRootLayout = () => {
       <Stack.Screen
         name='pengembalian-dana/[id]'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Detail Pengembalian',
+          headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name='pengembalian-dana/detail/[id]'
+        options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
+          headerTitle: 'Rincian Pengembalian',
           headerTitleAlign: 'center',
         }}
       />
@@ -54,6 +76,14 @@ const BorrowerRootLayout = () => {
       <Stack.Screen
         name='tarik-dana/index'
         options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
           headerTitle: 'Tarik Saldo',
           headerTitleAlign: 'center',
         }}

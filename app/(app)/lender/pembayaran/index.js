@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlatList } from 'react-native-gesture-handler'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { getListPembayaran } from '../../../../services/dompetService'
-import { TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_TYPE_LABEL } from '../../../../constants/general'
+import { TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE_LABEL } from '../../../../constants/general'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
 
 const TopUpPage = () => {
@@ -57,10 +57,10 @@ const TopUpPage = () => {
           />
 
           <Text style={{ fontSize: 14, fontWeight: 400 }}>{TRANSACTION_TYPE_LABEL[Number(item.transaction_type)]}</Text>
-          <Text style={{ fontSize: 14, fontWeight: 400 }}>{TRANSACTION_STATUS_LABEL[item.status]}</Text>
-          <Text style={{ fontSize: 14, fontWeight: 400 }}>{item.transaction_date}</Text>
           <Text style={{ fontSize: 14, fontWeight: 400 }}>{item.transaction_datetime}</Text>
-          <Text style={{ fontSize: 14, fontWeight: 400 }}>{formatCurrencyRp(item.transaction_amount)}</Text>
+          <Text style={{ fontSize: 14, fontWeight: 700 }}>{formatCurrencyRp(item.transaction_amount)}</Text>
+
+          <Text style={{ fontSize: 14, fontWeight: 700, color: TRANSACTION_STATUS_LABEL_COLOR[item.status] }}>{TRANSACTION_STATUS_LABEL[item.status]}</Text>
         </View>
       </Pressable>
     )
@@ -75,7 +75,7 @@ const TopUpPage = () => {
         renderItem={({ index, item }) => (<PembayaranItem item={item} index={index} />)}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        style={{ flex: 1, paddingVertical: 16 }}
+        style={{ flex: 1, marginTop: -12 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item) => item.trx_hash}
       />

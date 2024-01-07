@@ -65,7 +65,7 @@ export default function RegisterLender() {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: 16 }}>
-          <Text style={styles.textHeader}>Daftar Sebagai Pemodal</Text>
+          <Text style={styles.textHeader}>Daftar Sebagai Lender</Text>
           <Text style={styles.textSubHeader}>Lengkapi informasi mengenai akun dan kontak yang bisa dihubungi.</Text>
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textLabel}>Nama Lengkap (Sesuai KTP)</Text>

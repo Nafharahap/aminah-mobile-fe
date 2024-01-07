@@ -1,5 +1,5 @@
 import { Link, useFocusEffect } from 'expo-router'
-import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { View, SafeAreaView, Pressable, Image, StyleSheet, FlatList } from 'react-native'
 import { Stack } from "expo-router";
 import { useSession } from '../../context/auth';
 import { BusinessCard } from "../../components"
@@ -47,7 +47,7 @@ export default function Home() {
         setBusinesses(response.data.payload.mitra.data)
       }
     } catch (error) {
-      alert(error)
+      alert(error.message)
     } finally {
       setRefreshing(false)
     }
@@ -65,7 +65,7 @@ export default function Home() {
         }
       }
     } catch (error) {
-      alert(error)
+      alert(error.message)
     } finally {
       setRefreshing(false)
     }

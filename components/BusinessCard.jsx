@@ -37,8 +37,8 @@ const Business = ({ business, index }) => {
           }
       ]}>
         <Image
-          source={`${API_BASE_URL}/pendaftaran/${business.borrower?.business_image}`}
-          defaultSource={require('../assets/images/profile-placeholder.jpeg')}
+          source={{ uri: `${API_BASE_URL}/pendaftaran/${business.borrower?.business_image}` }}
+          defaultSource={require('../assets/images/product-image-placeholder.png')}
           style={{
             width: '100%',
             minHeight: 108,

@@ -3,6 +3,7 @@ import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet 
 import { useCallback, useState } from "react";
 import { getTarikBorrowerSaldoInvoice, postBorrowerWithdrawBallance } from "../../../../services/borrowerService";
 import CurrencyInput from 'react-native-currency-input';
+import { formatCurrencyRp } from "../../../../helpers/formatNumber";
 
 export default function BorrowerTarikPendanaan() {
   const router = useRouter()
@@ -98,7 +99,7 @@ export default function BorrowerTarikPendanaan() {
           </View>
 
           <View style={{ marginTop: 10 }}>
-            <Text style={styles.textLabel}>Jumlah Saldo Ditarik</Text>
+            <Text style={styles.textLabel}>Jumlah Saldo Ditarik (Saldo anda: {formatCurrencyRp(jumlahMaksimalSaldo ? jumlahMaksimalSaldo : 0)})</Text>
             <CurrencyInput
               style={styles.textInput}
               onChangeValue={setpJumlahSaldo}
