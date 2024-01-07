@@ -103,6 +103,7 @@ const CheckoutPage = () => {
           <FlatList
             data={cart.filter((item) => item.selected === true)}
             numColumns={1}
+            scrollEnabled={false}
             showsVerticalScrollIndicator={false}
             renderItem={({ index, item }) => (<CheckoutItem item={item} index={index} />)}
             style={{ flex: 1 }}
