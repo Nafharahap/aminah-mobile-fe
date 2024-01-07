@@ -31,7 +31,15 @@ const TopUpPage = () => {
 
   const NominalItem = ({ item, index, onClick }) => {
     return (
-      <Pressable onPress={() => onClick(item)} style={{ backgroundColor: item === nominal ? 'rgb(180, 255, 159)' : 'whitesmoke', paddingVertical: 16, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+      <Pressable onPress={() => onClick(item)} style={[
+        { backgroundColor: item === nominal ? 'rgb(180, 255, 159)' : 'whitesmoke', paddingVertical: 16, borderRadius: 20, justifyContent: 'center', alignItems: 'center', flex: 1 },
+        index % 2 === 0
+          ? {
+            marginRight: 6,
+          } : {
+            marginLeft: 6
+          }
+      ]}>
         <Text style={{ fontSize: 16 }}>{formatCurrencyRp(item)}</Text>
       </Pressable>
     )
@@ -81,7 +89,7 @@ const TopUpPage = () => {
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#FFFFFF' }}>
       <FlatList
         data={DATA}
-        numColumns={1}
+        numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<NominalItem item={item} index={index} onClick={onPressed} />)}
         style={{ flex: 1, marginTop: -20 }}
@@ -95,8 +103,8 @@ const TopUpPage = () => {
       />
 
       <View style={{ padding: 16 }}>
-        <Pressable onPress={onTopupPressed} style={{ backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8 }}>
-          <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Isi Dompet</Text>
+        <Pressable onPress={onTopupPressed} style={{ backgroundColor: '#076E5B', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8 }}>
+          <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Isi Saldo!</Text>
         </Pressable>
       </View>
     </SafeAreaView >

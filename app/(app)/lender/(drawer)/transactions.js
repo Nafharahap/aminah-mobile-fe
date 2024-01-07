@@ -142,20 +142,18 @@ const TransactionsPage = () => {
           <View
             onTouchEnd={onPembayaranHeaderClick}
             style={{
-              backgroundColor: '#FFFFFF',
+              backgroundColor: '#F00000',
               padding: 16,
               borderRadius: 8,
               marginBottom: 16,
-              borderColor: 'yellow',
-              borderWidth: 1,
               flexDirection: 'row',
               flex: 1,
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%'
             }}>
-            <Text style={{ marginRight: 12 }}>Ada item yang menuggu pembayaran!!</Text>
-            <AntDesign name="doubleright" size={16} color="black" />
+            <Text style={{ marginRight: 12, color: '#FFFFFF' }}>Ada item yang menuggu pembayaran!!</Text>
+            <AntDesign name="doubleright" size={16} color="white" />
           </View>
         </View>
       )
