@@ -47,6 +47,7 @@ export default function Home() {
         setBusinesses(response.data.payload.mitra.data)
       }
     } catch (error) {
+      console.log(error);
       alert(error.message)
     } finally {
       setRefreshing(false)
@@ -65,6 +66,7 @@ export default function Home() {
         }
       }
     } catch (error) {
+      console.log(error);
       alert(error.message)
     } finally {
       setRefreshing(false)

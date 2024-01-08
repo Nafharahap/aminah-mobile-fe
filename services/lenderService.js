@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL } from '@env'
 
+const API_URL = API_BASE_URL
+
 async function getToken() {
   let token = ''
   if (Platform.OS === 'web') {
@@ -32,7 +34,7 @@ export const getProfileLender = async () => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/profile`, {
+    const response = await axios.get(`${API_URL}/api/lender/profile`, {
       headers: headers
     });
 
@@ -51,7 +53,7 @@ export const getTarikLenderSaldoInvoice = async () => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/saldo/tarik/invoice`, {
+    const response = await axios.get(`${API_URL}/api/lender/saldo/tarik/invoice`, {
       headers: headers
     });
 
@@ -74,7 +76,7 @@ export const getListTransaksiLender = async ({ page = 1, type = '1,3,6' } = {}) 
       type = '1,3,6'
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi?page=${page}&type=${type}`, {
+    const response = await axios.get(`${API_URL}/api/lender/transaksi?page=${page}&type=${type}`, {
       headers: headers
     });
 
@@ -93,7 +95,7 @@ export const getDetailTransaksiLender = async (trx_hash) => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/transaksi/${trx_hash}`, {
+    const response = await axios.get(`${API_URL}/api/lender/transaksi/${trx_hash}`, {
       headers: headers
     });
 
@@ -112,7 +114,7 @@ export const getPendanaanListLender = async (borrowerId) => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/mitra/pendanaan/bayar/lender/${borrowerId}`, {
+    const response = await axios.get(`${API_URL}/api/mitra/pendanaan/bayar/lender/${borrowerId}`, {
       headers: headers
     });
 
@@ -132,7 +134,7 @@ export const postLenderSubmission = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/lender/profile/update`, data, {
+    const response = await axios.post(`${API_URL}/api/lender/profile/update`, data, {
       headers: headers
     });
 
@@ -152,7 +154,7 @@ export const postCheckoutCart = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/lender/checkout-api`, data, {
+    const response = await axios.post(`${API_URL}/api/lender/checkout-api`, data, {
       headers: headers
     });
 
@@ -172,7 +174,7 @@ export const postLenderWithdrawBallance = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/lender/saldo/tarik`, data, {
+    const response = await axios.post(`${API_URL}/api/lender/saldo/tarik`, data, {
       headers: headers
     });
 

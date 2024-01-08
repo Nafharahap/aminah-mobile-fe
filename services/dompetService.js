@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL } from '@env'
 
+const API_URL = API_BASE_URL
+
 async function getToken() {
   let token = ''
   if (Platform.OS === 'web') {
@@ -32,7 +34,7 @@ export const getListPembayaran = async () => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar`, {
+    const response = await axios.get(`${API_URL}/api/lender/dompet/bayar`, {
       headers: headers
     });
 
@@ -51,7 +53,7 @@ export const getDetailPembayaran = async (id) => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_BASE_URL}/api/lender/dompet/bayar/detail/${id}`, {
+    const response = await axios.get(`${API_URL}/api/lender/dompet/bayar/detail/${id}`, {
       headers: headers
     });
 
@@ -71,7 +73,7 @@ export const postIsiDompet = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/isi`, data, {
+    const response = await axios.post(`${API_URL}/api/lender/dompet/isi`, data, {
       headers: headers
     });
 
@@ -91,7 +93,7 @@ export const postBayar = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/lender/dompet/bayar`, data, {
+    const response = await axios.post(`${API_URL}/api/lender/dompet/bayar`, data, {
       headers: headers
     });
 
