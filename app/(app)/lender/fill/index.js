@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, Platform } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, Platform, ActivityIndicator } from "react-native";
 import Checkbox from "expo-checkbox";
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -26,6 +26,8 @@ export default function FilProfilePage() {
   const [fileDiri, setFileDiri] = useState(null);
   const [fileKtp, setFileKtp] = useState(null);
   const [check, setCheck] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const pickImage = async (typeInput) => {
     try {
@@ -77,6 +79,7 @@ export default function FilProfilePage() {
   };
 
   const onRegisterUmkmButtonPressed = async () => {
+    setRefreshing(true)
     try {
       const data = new FormData();
       data.append('nama', nama)
@@ -96,10 +99,12 @@ export default function FilProfilePage() {
 
       const response = await postLenderSubmission(data)
 
+      setRefreshing(false)
       console.log('Registrasi Berhasil')
       alert('Registrasi Berhasil')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       console.log('Pengajuan Gagal', error)
       alert('Pengajuan Gagal')
     }
@@ -261,8 +266,9 @@ export default function FilProfilePage() {
             <Text>Saya menyatakan bahwa data yang saya masukkan adalah benar.</Text>
           </View>
 
-          <Pressable style={styles.buttonRegister} onPress={onRegisterUmkmButtonPressed}>
+          <Pressable style={{ ...styles.buttonRegister, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} onPress={onRegisterUmkmButtonPressed} disabled={refreshing}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Lengkapi Profil Saya Sekarang</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </ScrollView>

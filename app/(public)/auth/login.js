@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, Image, TextInput, Pressable, StyleSheet } from 'react-native'
+import { Text, View, SafeAreaView, Image, TextInput, Pressable, StyleSheet, ActivityIndicator } from 'react-native'
 import { Stack, Link, useRouter } from "expo-router";
 import { useEffect, useState } from 'react';
 import { useSession } from '../../../context/auth';
@@ -11,9 +11,16 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onButtonLoginPressed = () => {
-    console.log('login button pressed');
-    signIn(email, password);
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onButtonLoginPressed = async () => {
+    setRefreshing(true)
+    try {
+      signIn(email, password);
+      setRefreshing(false)
+    } catch (error) {
+      setRefreshing(false)
+    }
   }
 
   return (
@@ -45,8 +52,9 @@ export default function Login() {
             secureTextEntry={true}
           />
 
-          <Pressable style={styles.buttonLogin} onPress={onButtonLoginPressed}>
+          <Pressable style={{ ...styles.buttonLogin, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} onPress={onButtonLoginPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Masuk</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
 

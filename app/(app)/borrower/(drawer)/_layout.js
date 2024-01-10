@@ -65,7 +65,18 @@ const BorrowerDrawerLayout = () => {
           headerBackground: () => <HeaderBg />
         }}
       />
+      <Drawer.Screen
+        name="transactions"
+        options={{
+          drawerLabel: "Aktifitas Transaksi",
+          title: "Aktifitas Transaksi",
+          headerTitleAlign: 'center',
+          drawerIcon: ({ color }) => <Ionicons name="receipt" size={24} color={color} />,
+          headerBackground: () => <HeaderBg />
+        }}
+      />
     </Drawer>
+
   )
 }
 

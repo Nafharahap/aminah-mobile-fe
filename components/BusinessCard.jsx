@@ -66,10 +66,10 @@ const Business = ({ business, index }) => {
                 {BUSINESS_TYPE_LABEL[Number.isInteger(Number(business?.borrower?.business_type)) ? Number(business?.borrower?.business_type) : 8]}
               </Text>
             </View>
-            <Text style={{ fontWeight: 500, fontSize: 10 }}>Terkumpul <Text style={{ color: '#199B57' }}>{business.dana_terkumpul}</Text></Text>
+            <Text style={{ fontWeight: 500, fontSize: 10 }}>Terkumpul <Text style={{ color: '#199B57' }}>{formatCurrency(business.dana_terkumpul)}</Text></Text>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
-              <Text style={{ color: '#199B57', fontWeight: 500, fontSize: 10, marginBottom: 2 }}>{business.dana_terkumpul_persen} %</Text>
+              <Text style={{ color: '#199B57', fontWeight: 500, fontSize: 10, marginBottom: 2 }}>{+business.dana_terkumpul_persen.toFixed(2)} %</Text>
               <Text style={{ fontWeight: 500, fontSize: 10 }}>Dari <Text style={{ color: '#199B57', fontWeight: 500, fontSize: 10 }}>{formatCurrency(business.borrower?.borrower_first_submission)}</Text></Text>
             </View>
             <Progress.Bar progress={business.dana_terkumpul_persen / 100} color="#076E5B" unfilledColor="#D9D9D9" borderWidth={0} borderRadius={8} width={null} height={4} />

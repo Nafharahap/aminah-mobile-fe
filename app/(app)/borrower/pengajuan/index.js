@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, ActivityIndicator } from "react-native";
 import Checkbox from "expo-checkbox";
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -29,6 +29,8 @@ export default function BorrowerPengajuan() {
   const [imageSiu, setImageSiu] = useState(null);
   const [imageProduct, setImageProduct] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const pickImage = async (typeInput) => {
     // No permissions request is necessary for launching the image library
@@ -73,6 +75,7 @@ export default function BorrowerPengajuan() {
   };
 
   const onRegisterUmkmButtonPressed = async () => {
+    setRefreshing(true)
     try {
       const data = new FormData();
       data.append('pemilikName', fullName)
@@ -98,10 +101,12 @@ export default function BorrowerPengajuan() {
 
       const response = await postBorrowerSubmission(data)
 
+      setRefreshing(false)
       console.log('Registrasi Berhasil')
       alert('Registrasi Berhasil')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       console.log('Pengajuan Gagal', error)
       alert('Pengajuan Gagal')
     }
@@ -354,8 +359,9 @@ export default function BorrowerPengajuan() {
             <Text>Saya menyatakan bahwa data yang saya masukkan adalah benar.</Text>
           </View>
 
-          <Pressable style={styles.buttonRegister} onPress={onRegisterUmkmButtonPressed}>
+          <Pressable style={{ ...styles.buttonRegister, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} onPress={onRegisterUmkmButtonPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftarkan Usaha Saya Sekarang</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </ScrollView>

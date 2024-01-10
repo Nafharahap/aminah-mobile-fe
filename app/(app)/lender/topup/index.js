@@ -1,7 +1,5 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, SafeAreaView, FlatList, ActivityIndicator } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList } from 'react-native-gesture-handler'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { postIsiDompet } from '../../../../services/dompetService'
@@ -23,6 +21,7 @@ const DATA = [
 const TopUpPage = () => {
   const [nominal, setNominal] = useState(null)
   const [profile, setProfile] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
   const router = useRouter()
 
   const onPressed = (item) => {
@@ -67,6 +66,7 @@ const TopUpPage = () => {
   }
 
   const onTopupPressed = async () => {
+    setRefreshing(true)
     try {
       if (!isProfileCompleted()) {
         throw Error('Silahkan Lengkapi Profil Terlebih Dahulu')
@@ -77,10 +77,11 @@ const TopUpPage = () => {
 
       const response = await postIsiDompet(data)
 
-      console.log('Segera Lakukan Pembayaran')
+      setRefreshing(false)
       alert('Segera Lakukan Pembayaran')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       alert(error.message)
     }
   }
@@ -92,7 +93,7 @@ const TopUpPage = () => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<NominalItem item={item} index={index} onClick={onPressed} />)}
-        style={{ flex: 1, marginTop: -20 }}
+        contentContainerStyle={{ paddingVertical: 20 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item, index) => index}
         ListHeaderComponent={() => (
@@ -103,8 +104,9 @@ const TopUpPage = () => {
       />
 
       <View style={{ padding: 16 }}>
-        <Pressable onPress={onTopupPressed} style={{ backgroundColor: '#076E5B', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8 }}>
+        <Pressable onPress={onTopupPressed} style={{ flexDirection: 'row', backgroundColor: '#076E5B', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8, opacity: refreshing ? 0.5 : 1 }} disabled={refreshing}>
           <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Isi Saldo!</Text>
+          <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
         </Pressable>
       </View>
     </SafeAreaView >

@@ -1,7 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import React, { useState, useCallback } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList } from 'react-native-gesture-handler'
 import { Link, useFocusEffect, useRouter } from 'expo-router'
 import { getListPembayaran } from '../../../../services/dompetService'
 import { TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE, TRANSACTION_TYPE_LABEL } from '../../../../constants/general'
@@ -182,14 +180,13 @@ const TransactionsPage = () => {
         numColumns={1}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<TransactionItem item={item} index={item.id} />)}
-        style={{ flex: 1, marginTop: -12 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item) => item.trx_hash}
         refreshing={refreshing}
         onRefresh={onRefresh}
         onEndReached={getMoreData}
         onEndReachedThreshold={0.1}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        contentContainerStyle={{ paddingVertical: 16 }}
         ListHeaderComponent={() => (<PembayaranHeader />)}
       />
     </SafeAreaView >

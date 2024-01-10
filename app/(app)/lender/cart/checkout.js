@@ -1,8 +1,6 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import { useCart } from '../../../../context/cart'
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
 import { getProfileLender, postCheckoutCart } from '../../../../services/lenderService'
 import { useFocusEffect, useRouter } from 'expo-router'
@@ -33,6 +31,7 @@ const CheckoutItem = ({ item, index }) => {
 const CheckoutPage = () => {
   const { cart, removeAllCartItem } = useCart()
   const [profile, setProfile] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
   const router = useRouter()
 
   const sumTotalHarga = () => {
@@ -70,6 +69,7 @@ const CheckoutPage = () => {
   }
 
   const onButtonPayPressed = async () => {
+    setRefreshing(true)
     try {
       if (!isSufficient()) {
         throw Error('Saldo Tidak Cukup')
@@ -84,11 +84,12 @@ const CheckoutPage = () => {
       data.append('cartItems', JSON.stringify(cart))
 
       const response = await postCheckoutCart(data)
-      console.log(response);
+      setRefreshing(false)
       removeAllCartItem()
       alert('Berhasil Checkout')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       alert(error.message)
     }
   }
@@ -96,7 +97,7 @@ const CheckoutPage = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#D9D9D9' }}>
       <ScrollView
-        style={{ paddingHorizontal: 16, height: '80%' }}
+        style={{ padding: 16, height: '80%' }}
         showsVerticalScrollIndicator={false}
       >
         <View style={{ backgroundColor: '#FFFFFF', padding: 12, borderRadius: 8 }}>
@@ -148,8 +149,9 @@ const CheckoutPage = () => {
           <Text style={{ fontSize: 20, fontWeight: 700, color: '#199B57' }}>{formatCurrencyRp(sumTotalHarga())}</Text>
         </View>
         <View style={{ flex: 4 }}>
-          <Pressable onPress={onButtonPayPressed} style={{ width: '100%', height: '100%', backgroundColor: '#076E5B', justifyContent: 'center' }}>
+          <Pressable onPress={onButtonPayPressed} style={{ flexDirection: 'row', width: '100%', height: '100%', backgroundColor: '#076E5B', justifyContent: 'center', alignItems: 'center', opacity: refreshing ? 0.5 : 1 }} disabled={refreshing}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 700 }}>Bayar</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </View>

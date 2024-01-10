@@ -1,5 +1,5 @@
 import { useFocusEffect, useRouter } from "expo-router";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useCallback, useState } from "react";
 import { getTarikBorrowerSaldoInvoice, postBorrowerWithdrawBallance } from "../../../../services/borrowerService";
 import CurrencyInput from 'react-native-currency-input';
@@ -13,6 +13,8 @@ export default function BorrowerTarikPendanaan() {
   const [nomorRekening, setpNomorRekening] = useState('');
   const [jumlahSaldo, setpJumlahSaldo] = useState(0);
   const [jumlahMaksimalSaldo, setpJumlahMaksimalSaldo] = useState(0);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const getData = async () => {
     try {
@@ -36,6 +38,7 @@ export default function BorrowerTarikPendanaan() {
   );
 
   const onWithdrawButtonPressed = async () => {
+    setRefreshing(true)
     try {
       if (jumlahMaksimalSaldo === 0) {
         throw Error('Saldo Anda Kosong')
@@ -53,9 +56,11 @@ export default function BorrowerTarikPendanaan() {
 
       const response = await postBorrowerWithdrawBallance(data)
 
+      setRefreshing(false)
       alert('Penarikan Saldo Berhasil')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       alert(error.message)
     }
   }
@@ -114,8 +119,9 @@ export default function BorrowerTarikPendanaan() {
             />
           </View>
 
-          <Pressable style={styles.buttonRegister} onPress={onWithdrawButtonPressed}>
+          <Pressable style={{ ...styles.buttonRegister, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} onPress={onWithdrawButtonPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Tarik Dana Sekarang!</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </ScrollView>

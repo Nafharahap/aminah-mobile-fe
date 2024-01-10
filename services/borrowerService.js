@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL } from '@env'
 
-const API_URL = API_BASE_URL
+const apiBaseUrl = API_BASE_URL
 
 async function getToken() {
   let token = ''
@@ -34,7 +34,7 @@ export const getProfileBorrower = async () => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_URL}/api/mitra/profile`, {
+    const response = await axios.get(`${apiBaseUrl}/api/mitra/profile`, {
       headers: headers
     });
 
@@ -54,7 +54,7 @@ export const postBorrowerSubmission = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_URL}/api/mitra/pengajuan`, data, {
+    const response = await axios.post(`${apiBaseUrl}/api/mitra/pengajuan`, data, {
       headers: headers
     });
 
@@ -73,7 +73,7 @@ export const getTarikBorrowerSaldoInvoice = async () => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_URL}/api/mitra/saldo/tarik/invoice`, {
+    const response = await axios.get(`${apiBaseUrl}/api/mitra/saldo/tarik/invoice`, {
       headers: headers
     });
 
@@ -92,7 +92,7 @@ export const getPendanaanList = async (id) => {
       Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.get(`${API_URL}/api/mitra/pendanaan/bayar/${id}`, {
+    const response = await axios.get(`${apiBaseUrl}/api/mitra/pendanaan/bayar/${id}`, {
       headers: headers
     });
 
@@ -112,7 +112,7 @@ export const postBorrowerWithdrawBallance = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_URL}/api/mitra/saldo/tarik`, data, {
+    const response = await axios.post(`${apiBaseUrl}/api/mitra/saldo/tarik`, data, {
       headers: headers
     });
 
@@ -132,7 +132,7 @@ export const postReturnPendanaan = async (data) => {
       'Content-Type': 'multipart/form-data',
     }
 
-    const response = await axios.post(`${API_URL}/api/mitra/pendanaan/bayar`, data, {
+    const response = await axios.post(`${apiBaseUrl}/api/mitra/pendanaan/bayar`, data, {
       headers: headers
     });
 

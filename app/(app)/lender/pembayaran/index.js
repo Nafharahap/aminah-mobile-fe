@@ -1,7 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, SafeAreaView } from 'react-native'
 import React, { useState, useCallback } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList } from 'react-native-gesture-handler'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { getListPembayaran } from '../../../../services/dompetService'
 import { TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE_LABEL } from '../../../../constants/general'
@@ -37,7 +35,7 @@ const TopUpPage = () => {
     getData();
   }, []);
 
-  const PembayaranItem = ({ item, index }) => {
+  const PembayaranItem = ({ item }) => {
     const onPembayaranItemPressed = () => {
       if (item.status === TRANSACTION_STATUS.WAITING) {
         router.push({ pathname: '/(app)/lender/pembayaran/[:id]', params: { id: item.trx_hash } })
@@ -72,10 +70,10 @@ const TopUpPage = () => {
         data={data}
         numColumns={1}
         showsVerticalScrollIndicator={false}
-        renderItem={({ index, item }) => (<PembayaranItem item={item} index={index} />)}
+        renderItem={({ index, item }) => (<PembayaranItem item={item} />)}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        style={{ flex: 1, marginTop: -12 }}
+        contentContainerStyle={{ paddingVertical: 16 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item) => item.trx_hash}
       />

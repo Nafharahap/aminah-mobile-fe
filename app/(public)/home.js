@@ -107,14 +107,13 @@ export default function Home() {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ index, item }) => (<BusinessCard business={item} index={index} />)}
-        style={{ flex: 1, paddingTop: 12 }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         keyExtractor={item => item.id}
         refreshing={refreshing}
         onRefresh={onRefresh}
         onEndReached={getMoreData}
         onEndReachedThreshold={0.1}
-        contentContainerStyle={{ paddingBottom: 40, marginTop: -12 }}
+        contentContainerStyle={{ paddingVertical: 16 }}
       />
     </SafeAreaView >
   );

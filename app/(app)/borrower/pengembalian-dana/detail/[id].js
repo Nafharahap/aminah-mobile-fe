@@ -1,8 +1,6 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, ScrollView, RefreshControl, SafeAreaView, ActivityIndicator } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 import { getDetailPembayaran, postBayar } from '../../../../../services/dompetService';
 import { formatCurrencyRp } from '../../../../../helpers/formatNumber';
@@ -75,6 +73,7 @@ const DetailPembayaran = () => {
   );
 
   const onBayarPressed = async () => {
+    setRefreshing(true)
     try {
       const data = new FormData();
       data.append('trx_hash', id)
@@ -82,9 +81,11 @@ const DetailPembayaran = () => {
 
       const response = await postBayar(data)
 
+      setRefreshing(false)
       alert('Item Berhasil Dibayar')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       alert('Request Gagal')
     }
   }
@@ -94,7 +95,7 @@ const DetailPembayaran = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#D9D9D9' }}>
+    <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: '#D9D9D9' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -162,8 +163,9 @@ const DetailPembayaran = () => {
       </ScrollView>
 
       <View style={{ padding: 16 }}>
-        <Pressable onPress={onBayarPressed} style={{ backgroundColor: '#198754', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8 }}>
+        <Pressable onPress={onBayarPressed} style={{ backgroundColor: '#198754', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }}>
           <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Upload Bukti Bayar!</Text>
+          <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
         </Pressable>
       </View>
     </SafeAreaView >

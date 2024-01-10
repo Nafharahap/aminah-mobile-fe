@@ -1,8 +1,6 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 import { getDetailPembayaran, postBayar } from '../../../../services/dompetService';
 import { formatCurrencyRp } from '../../../../helpers/formatNumber';
@@ -155,8 +153,9 @@ const DetailPembayaran = () => {
       </ScrollView>
 
       <View style={{ padding: 16 }}>
-        <Pressable onPress={onBayarPressed} style={{ backgroundColor: '#198754', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8 }}>
+        <Pressable onPress={onBayarPressed} style={{ flexDirection: 'row', backgroundColor: '#198754', justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingVertical: 8, opacity: refreshing ? 0.3 : 1 }} disabled={refreshing}>
           <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Upload Bukti Bayar!</Text>
+          <ActivityIndicator animating={refreshing} size="small" style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
         </Pressable>
       </View>
     </SafeAreaView >

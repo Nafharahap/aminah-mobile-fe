@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View, SafeAreaView, Text, ScrollView, TextInput, Pressable, Image } from "react-native"
+import { View, SafeAreaView, Text, ScrollView, TextInput, Pressable, Image, ActivityIndicator } from "react-native"
 import Checkbox from 'expo-checkbox'
 import { Stack, useRouter } from "expo-router"
 import styles from './register.style'
@@ -26,7 +26,10 @@ export default function RegisterLender() {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [isChecked, setChecked] = useState(false)
 
+  const [refreshing, setRefreshing] = useState(false)
+
   const onButtonRegisterPressed = async () => {
+    setRefreshing(true)
     try {
       const response = await postRegisterLender({
         fullName,
@@ -36,10 +39,12 @@ export default function RegisterLender() {
         agreeTerms: isChecked
       })
 
+      setRefreshing(false)
       console.log('Registrasi Berhasil')
       router.replace('/(public)/auth/login')
       alert('Registrasi Berhasil')
     } catch (error) {
+      setRefreshing(false)
       console.log('Registrasi Gagal', error)
       const errorMessage = error.response.data.message
       alert(`Registrasi Gagal ${errorMessage}`)
@@ -114,8 +119,9 @@ export default function RegisterLender() {
           />
           <Text>Saya menyetujui ketentuan layanan dan kebijakan privasi.</Text>
 
-          <Pressable style={styles.buttonRegister} onPress={onButtonRegisterPressed}>
+          <Pressable style={{ ...styles.buttonRegister, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} onPress={onButtonRegisterPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Daftar</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </ScrollView>

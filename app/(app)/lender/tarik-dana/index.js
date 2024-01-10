@@ -1,5 +1,5 @@
 import { useFocusEffect, useRouter } from "expo-router";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useCallback, useState } from "react";
 import CurrencyInput from 'react-native-currency-input';
 import { getTarikLenderSaldoInvoice, postLenderWithdrawBallance } from "../../../../services/lenderService";
@@ -13,8 +13,10 @@ export default function LenderTarikDana() {
   const [nomorRekening, setpNomorRekening] = useState('');
   const [jumlahSaldo, setpJumlahSaldo] = useState(0);
   const [jumlahMaksimalSaldo, setpJumlahMaksimalSaldo] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getData = async () => {
+    setRefreshing(true)
     try {
       const response = await getTarikLenderSaldoInvoice()
       if (response) {
@@ -24,8 +26,10 @@ export default function LenderTarikDana() {
         setpNomorRekening(data?.lender.account_number)
         setpJumlahMaksimalSaldo(data?.lenderSumAmmount)
       }
+      setRefreshing(false)
     } catch (error) {
       console.log(error.message)
+      setRefreshing(false)
       alert(error.message)
       router.back()
     }
@@ -38,6 +42,7 @@ export default function LenderTarikDana() {
   );
 
   const onWithdrawButtonPressed = async () => {
+    setRefreshing(true)
     try {
       if (jumlahMaksimalSaldo === 0) {
         throw Error('Saldo Anda Kosong')
@@ -55,9 +60,11 @@ export default function LenderTarikDana() {
 
       const response = await postLenderWithdrawBallance(data)
 
+      setRefreshing(false)
       alert('Penarikan Saldo Berhasil')
       router.back()
     } catch (error) {
+      setRefreshing(false)
       alert(error.message)
     }
   }
@@ -116,8 +123,9 @@ export default function LenderTarikDana() {
             />
           </View>
 
-          <Pressable style={styles.buttonRegister} onPress={onWithdrawButtonPressed}>
+          <Pressable style={{ ...styles.buttonRegister, flexDirection: 'row', opacity: refreshing ? 0.5 : 1 }} disabled={refreshing} onPress={onWithdrawButtonPressed}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Tarik Dana Sekarang!</Text>
+            <ActivityIndicator animating={refreshing} size="small" color={'#FFFFFF'} style={{ marginLeft: 12, display: refreshing ? 'flex' : 'none' }} />
           </Pressable>
         </View>
       </ScrollView>

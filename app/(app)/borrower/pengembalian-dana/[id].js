@@ -1,7 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, FlatList, SafeAreaView } from 'react-native'
 import React, { useState, useCallback } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList } from 'react-native-gesture-handler'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE_LABEL } from '../../../../constants/general'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
@@ -45,44 +43,42 @@ const ReturnProfitPage = () => {
     }
 
     return (
-      <Pressable onPress={onPembayaranItemPressed}>
-        <View style={{
-          backgroundColor: '#FFFFFF',
-          padding: 16,
-          borderRadius: 5
-        }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-            <Text style={{ fontSize: 12 }}>Status Pengembalian:</Text>
-            <Text style={{ color: TRANSACTION_STATUS_LABEL_COLOR[item.status], fontSize: 12, fontWeight: 500 }}>{TRANSACTION_STATUS_LABEL[item.status]}</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-            <Text style={{ fontSize: 12, fontWeight: 700 }}>Jumlah Pengembalian:</Text>
-            <Text style={{ fontSize: 12, fontWeight: 700 }}>{formatCurrencyRp(item.transaction_amount)}</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-            <Text style={{ fontSize: 12, fontWeight: 700 }}>Keterangan:</Text>
-            <Text style={{ fontSize: 12, fontWeight: 700 }}>{diffForHumans(item.transaction_date)}</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-            <Text>Tanggal Jatuh Tempo:</Text>
-            <Text>{item.transaction_date}</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8 }}>
-            <Pressable onPress={onPembayaranItemPressed} style={{ borderRadius: 20, backgroundColor: '#076E5B', paddingHorizontal: 16, paddingVertical: 4 }}>
-              <Text style={{ color: 'white' }}>Bayar</Text>
-            </Pressable>
-          </View>
+      <View style={{
+        backgroundColor: '#FFFFFF',
+        padding: 16,
+        borderRadius: 5
+      }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+          <Text style={{ fontSize: 12 }}>Status Pengembalian:</Text>
+          <Text style={{ color: TRANSACTION_STATUS_LABEL_COLOR[item.status], fontSize: 12, fontWeight: 500 }}>{TRANSACTION_STATUS_LABEL[item.status]}</Text>
         </View>
-      </Pressable>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+          <Text style={{ fontSize: 12, fontWeight: 700 }}>Jumlah Pengembalian:</Text>
+          <Text style={{ fontSize: 12, fontWeight: 700 }}>{formatCurrencyRp(item.transaction_amount)}</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+          <Text style={{ fontSize: 12, fontWeight: 700 }}>Keterangan:</Text>
+          <Text style={{ fontSize: 12, fontWeight: 700 }}>{diffForHumans(item.transaction_date)}</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+          <Text>Tanggal Jatuh Tempo:</Text>
+          <Text>{item.transaction_date}</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8 }}>
+          <Pressable onPress={onPembayaranItemPressed} style={{ borderRadius: 20, backgroundColor: '#076E5B', opacity: item.status === TRANSACTION_STATUS.SUCCESS ? 0.3 : 1, paddingHorizontal: 16, paddingVertical: 4 }} disabled={item.status === TRANSACTION_STATUS.SUCCESS}>
+            <Text style={{ color: 'white' }}>Bayar</Text>
+          </Pressable>
+        </View>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 16, backgroundColor: '#D9D9D9' }}>
+    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#D9D9D9' }}>
       <FlatList
         data={data}
         numColumns={1}
@@ -90,7 +86,7 @@ const ReturnProfitPage = () => {
         renderItem={({ index, item }) => (<PembayaranItem item={item} index={index} />)}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        style={{ flex: 1, marginTop: -12 }}
+        contentContainerStyle={{ paddingVertical: 16 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         keyExtractor={(item) => item.trx_hash}
       />

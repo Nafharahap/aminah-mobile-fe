@@ -27,7 +27,7 @@ const CartPage = () => {
                 numColumns={1}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ index, item }) => (<CartItem item={item} index={index} />)}
-                style={{ flex: 1, paddingTop: 12 }}
+                contentContainerStyle={{ paddingVertical: 16 }}
                 ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
                 keyExtractor={item => item.id}
               />

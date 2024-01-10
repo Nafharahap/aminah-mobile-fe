@@ -1,14 +1,11 @@
-import { View, Text, SafeAreaView, ImageBackground, Image, Pressable, StyleSheet, TextInput } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter, useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
+import { View, Text, SafeAreaView, Image, StyleSheet, ScrollView, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 import { getDetailMitra } from '../../../../services/publicService';
-import { FlatList, RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { API_BASE_URL } from '@env'
-import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useSession } from '../../../../context/auth';
 import { formatCurrencyRp } from '../../../../helpers/formatNumber';
-import { StackProfilePicture } from '../../../../components';
-import { BUSINESS_TYPE_LABEL, PENDANAAN_TYPE_LABEL, PENDANAAN_TYPE_LABEL_COLOR, TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE, TRANSACTION_TYPE_LABEL } from '../../../../constants/general';
+import { PENDANAAN_TYPE_LABEL, PENDANAAN_TYPE_LABEL_COLOR, TRANSACTION_STATUS, TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE, TRANSACTION_TYPE_LABEL } from '../../../../constants/general';
 import { getDetailTransaksiLender, getPendanaanListLender } from '../../../../services/lenderService';
 import { diffForHumans, formateDateTime } from '../../../../helpers/time';
 

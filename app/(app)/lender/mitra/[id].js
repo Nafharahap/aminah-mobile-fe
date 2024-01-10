@@ -1,8 +1,7 @@
-import { View, Text, SafeAreaView, ImageBackground, Image, Pressable, StyleSheet, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, ImageBackground, ScrollView, Pressable, StyleSheet, RefreshControl } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useRouter, useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { getDetailMitra } from '../../../../services/publicService';
-import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { API_BASE_URL } from '@env'
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useSession } from '../../../../context/auth';

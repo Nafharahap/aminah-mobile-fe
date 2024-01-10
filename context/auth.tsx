@@ -23,13 +23,12 @@ export function SessionProvider(props) {
               password
             })
             const user = response.data.user
-            console.log('Login Berhasil');
             alert('Login Berhasil')
             setSession(user);
+            return user
           } catch (error) {
-            const errorMessage = error.response.data.message
-            console.log(`Login Gagal, ${errorMessage}`);
-            alert(`Login Gagal, ${errorMessage}`)
+            alert(`Login Gagal ${error.message}`)
+            throw new Error(error)
           }
 
         },
