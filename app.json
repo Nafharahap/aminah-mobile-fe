@@ -16,6 +16,17 @@
       ]
     ],
     "name": "aminah-app",
-    "slug": "aminah-app"
+    "slug": "aminah-app",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1d7dee2f-17e5-4359-87fd-31060197d105"
+      }
+    },
+    "android": {
+      "package": "com.k4ngkung.aminahapp"
+    }
   }
 }
