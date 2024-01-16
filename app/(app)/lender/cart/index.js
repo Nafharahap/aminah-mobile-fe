@@ -1,4 +1,5 @@
 import { View, SafeAreaView, FlatList, Text, Pressable } from "react-native"
+import React, { useMemo } from 'react'
 import { CartItem } from "../../../../components";
 import { useCart } from "../../../../context/cart";
 import { useRouter } from "expo-router";
@@ -15,6 +16,10 @@ const CartPage = () => {
   const onCheckoutPressed = () => {
     router.push('/(app)/lender/cart/checkout')
   }
+
+  const checkedCartItem = useMemo(() => {
+    return cart.filter((item) => item.selected === true)
+  }, [cart]);
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#D9D9D9' }}>
@@ -36,7 +41,7 @@ const CartPage = () => {
                 <Pressable style={{ flex: 1, paddingVertical: 8, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: '#6C6C6C' }} onPress={onDeleteAllPressed}>
                   <Text style={{ fontSize: 12, color: '#FFFFFF', fontWeight: 500 }}>Hapus Semua Item</Text>
                 </Pressable>
-                <Pressable style={{ flex: 1, paddingVertical: 8, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: '#076E5B' }} onPress={onCheckoutPressed}>
+                <Pressable style={{ flex: 1, paddingVertical: 8, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: '#076E5B', opacity: checkedCartItem.length === 0 ? 0.3 : 1 }} onPress={onCheckoutPressed} disabled={checkedCartItem.length === 0}>
                   <Text style={{ fontSize: 12, color: '#FFFFFF', fontWeight: 500 }}>Checkout</Text>
                 </Pressable>
               </View>

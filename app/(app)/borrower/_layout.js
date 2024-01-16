@@ -88,6 +88,22 @@ const BorrowerRootLayout = () => {
           headerTitleAlign: 'center',
         }}
       />
+
+      <Stack.Screen
+        name='transaction/[trx_hash]'
+        options={{
+          headerLeft: () => {
+            return (
+              <Pressable onPress={router.back}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </Pressable>
+            )
+          },
+          headerBackground: () => <HeaderBg />,
+          headerTitle: 'Rincian Transaksi',
+          headerTitleAlign: 'center',
+        }}
+      />
     </Stack>
   )
 }

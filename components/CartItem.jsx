@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { formatCurrencyRp } from '../helpers/formatNumber';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { useCart } from '../context/cart';
 import { getDetailMitra } from '../services/publicService';
@@ -26,6 +26,10 @@ const CartItem = ({ item, index }) => {
     }
   }
 
+  const onTrashButtonPressed = () => {
+    removeCartItem(item.id)
+  }
+
   const onToggleSelectPressed = () => {
     updateCart(item.id, item.quantity, !item.selected)
   }
@@ -45,16 +49,19 @@ const CartItem = ({ item, index }) => {
   }, [item.id])
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 8, padding: 12 }}>
-      <View>
-        <Text style={{ fontSize: 12, fontWeight: 600 }}>{item.name} - {item.borrower_name}</Text>
+    <View style={{ flexDirection: 'row', gap: 16, justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 8, padding: 12 }}>
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontSize: 12, fontWeight: 600 }} numberOfLines={1}>{item.name} - {item.borrower_name}</Text>
         <Text style={{ fontSize: 12, fontWeight: 700 }}>Total Biaya: {formatCurrencyRp(item.price * item.quantity)}</Text>
-        <View style={{ marginTop: 8 }}>
-          <View style={{ padding: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', width: 80, borderRadius: 20, marginBottom: 4 }}>
-            <Entypo onPress={onButtonRemovePressed} name="circle-with-minus" size={20} color="#076E5B" />
-            <Text style={{ fontSize: 12 }}>{item.quantity}</Text>
-            <Entypo onPress={onButtonAddPressed} name="circle-with-plus" size={20} color="#076E5B" />
+        <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center', gap: 20 }}>
+          <View>
+            <View style={{ padding: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', width: 92, borderRadius: 20, marginBottom: 4 }}>
+              <Entypo onPress={onButtonRemovePressed} name="circle-with-minus" size={24} color="#076E5B" />
+              <Text style={{ fontSize: 12 }}>{item.quantity}</Text>
+              <Entypo onPress={onButtonAddPressed} name="circle-with-plus" size={24} color="#076E5B" style={{ opacity: item.quantity === funding?.sisa_unit ? 0.3 : 1 }} />
+            </View>
           </View>
+          <FontAwesome onPress={onTrashButtonPressed} name="trash-o" size={24} color="black" />
         </View>
         <Text>Sisa Unit: {funding?.sisa_unit}</Text>
       </View>

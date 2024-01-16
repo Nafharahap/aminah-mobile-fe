@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet, FlatList, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useCart } from '../../../../context/cart'
 import { formatCurrencyRp } from '../../../../helpers/formatNumber'
 import { getProfileLender, postCheckoutCart } from '../../../../services/lenderService'
@@ -29,7 +29,7 @@ const CheckoutItem = ({ item, index }) => {
 }
 
 const CheckoutPage = () => {
-  const { cart, removeAllCartItem } = useCart()
+  const { cart, removeCartItem } = useCart()
   const [profile, setProfile] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
   const router = useRouter()
@@ -41,7 +41,6 @@ const CheckoutPage = () => {
 
     return sum * 100000
   }
-
 
   const getData = async () => {
     try {
@@ -60,6 +59,10 @@ const CheckoutPage = () => {
     }, [])
   );
 
+  const checkedCartItem = useMemo(() => {
+    return cart.filter((item) => item.selected === true)
+  }, [cart]);
+
   const isSufficient = () => {
     return Number(sumTotalHarga()) <= profile?.sumAmount
   }
@@ -75,17 +78,19 @@ const CheckoutPage = () => {
         throw Error('Saldo Tidak Cukup')
       } else if (!isProfileCompleted()) {
         throw Error('Silahkan Lengkapi Profil Terlebih Dahulu')
-      } else if (cart.length < 1) {
+      } else if (checkedCartItem.length < 1) {
         throw Error('Maaf, tidak ada item di keranjang')
       }
 
       const data = new FormData();
       data.append('metodePembayaran', 1)
-      data.append('cartItems', JSON.stringify(cart))
+      data.append('cartItems', JSON.stringify(checkedCartItem))
 
       const response = await postCheckoutCart(data)
       setRefreshing(false)
-      removeAllCartItem()
+      checkedCartItem.forEach((item) => {
+        removeCartItem(item.id)
+      });
       alert('Berhasil Checkout')
       router.back()
     } catch (error) {
@@ -102,7 +107,7 @@ const CheckoutPage = () => {
       >
         <View style={{ backgroundColor: '#FFFFFF', padding: 12, borderRadius: 8 }}>
           <FlatList
-            data={cart.filter((item) => item.selected === true)}
+            data={checkedCartItem}
             numColumns={1}
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}

@@ -1,10 +1,8 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams } from 'expo-router';
-import { getDetailMitra } from '../../../../services/publicService';
-import { ScrollView } from 'react-native-gesture-handler';
 import { formatCurrencyRp } from '../../../../helpers/formatNumber';
-import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE, TRANSACTION_TYPE_LABEL } from '../../../../constants/general';
+import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_LABEL_COLOR, TRANSACTION_TYPE_LABEL } from '../../../../constants/general';
 import { getDetailTransaksiLender } from '../../../../services/lenderService';
 import { formateDateTime } from '../../../../helpers/time';
 
@@ -54,7 +52,7 @@ const DetailComponentSaldo = ({ detail }) => {
   )
 }
 
-const BusinessDetailPage = () => {
+const TransactionDetailPage = () => {
   const params = useLocalSearchParams();
   const { trx_hash } = params
   const [detail, setDetail] = useState(null)
@@ -63,22 +61,8 @@ const BusinessDetailPage = () => {
     try {
       const response = await getDetailTransaksiLender(trx_hash)
       setDetail(response.data.payload.detailTransaction)
-      const fundingId = response.data.payload.detailTransaction.funding_id
-      if (fundingId) {
-        geDetailFunding(fundingId)
-      }
     } catch (error) {
       alert(error.message)
-    }
-  }
-
-  const geDetailFunding = async (fundingId) => {
-    try {
-      const response = await getDetailMitra(fundingId)
-      setFunding(response.data.payload.funding)
-    } catch (error) {
-      console.log(error);
-      alert(error)
     }
   }
 
@@ -91,10 +75,10 @@ const BusinessDetailPage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
       >
-        {detail?.transaction_type == TRANSACTION_TYPE.PENARIKAN_SALDO_LENDER || detail?.transaction_type == TRANSACTION_TYPE.PENGISIAN_SALDO_LENDER || detail?.transaction_type == TRANSACTION_TYPE.PENARIKAN_PENDANAAN ? (<DetailComponentSaldo detail={detail} />) : null}
+        <DetailComponentSaldo detail={detail} />
       </ScrollView>
     </SafeAreaView >
   )
 }
 
-export default BusinessDetailPage
+export default TransactionDetailPage

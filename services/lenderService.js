@@ -63,7 +63,7 @@ export const getTarikLenderSaldoInvoice = async () => {
   }
 }
 
-export const getListTransaksiLender = async ({ page = 1, type = '1,3,6' } = {}) => {
+export const getListTransaksi = async ({ page = 1, type = '1,3,6' } = {}) => {
   try {
     const token = await getToken();
 

@@ -200,7 +200,7 @@ const BusinessDetailPage = () => {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text style={{ fontWeight: 500, fontSize: 12 }}>Progres Pendanaan:</Text>
-              <Text style={{ fontWeight: 300, fontSize: 12 }}>{business?.dana_terkumpul_persen}%</Text>
+              <Text style={{ fontWeight: 300, fontSize: 12 }}>{+business?.dana_terkumpul_persen.toFixed(2)}%</Text>
             </View>
           </View>
         </View>
@@ -217,7 +217,7 @@ const BusinessDetailPage = () => {
           <View style={{ padding: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFFFFF', width: 80, borderRadius: 20, marginBottom: 4 }}>
             <Entypo onPress={subtractCount} name="circle-with-minus" size={20} color="#076E5B" />
             <Text style={{ fontSize: 12 }}>{unitCount}</Text>
-            <Entypo onPress={addCount} name="circle-with-plus" size={20} color="#076E5B" />
+            <Entypo onPress={addCount} name="circle-with-plus" size={20} color="#076E5B" style={{ opacity: unitCount === business?.sisa_unit ? 0.3 : 1 }} />
           </View>
           <Pressable style={{ paddingHorizontal: 16, paddingVertical: 2, width: 80, borderRadius: 20, backgroundColor: business?.sisa_unit > 0 ? '#076E5B' : '#6C6C6C' }} onPress={onButtonBuyPressed} disabled={business?.sisa_unit === 0}>
             <Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: 500, opacity: business?.sisa_unit > 0 ? 1 : 0.3 }}>Beli</Text>

@@ -35,6 +35,7 @@ const Business = ({ business, index }) => {
           } : {
             paddingLeft: 6
           }
+        ,
       ]}>
         <Image
           source={{ uri: `${API_BASE_URL}/pendaftaran/${business.borrower?.business_image}` }}
@@ -46,6 +47,7 @@ const Business = ({ business, index }) => {
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}
+
         />
         <View style={{ justifyContent: 'space-between', minHeight: 120, maxHeight: 120, paddingBottom: 16, paddingHorizontal: 8, paddingTop: 4, backgroundColor: 'white', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
           <Text style={{ fontWeight: 500, fontSize: 12 }}>{business.borrower?.business_name}</Text>

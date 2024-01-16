@@ -137,8 +137,9 @@ const ModalCardDetails = () => {
           <View style={{ paddingHorizontal: 2, paddingVertical: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#D9D9D9', width: '100%', borderRadius: 20, marginBottom: 4 }}>
             <Entypo onPress={subtractCount} name="circle-with-minus" size={20} color="#076E5B" />
             <Text style={{ fontSize: 12 }}>{unitCount}</Text>
-            <Entypo onPress={addCount} name="circle-with-plus" size={20} color="#076E5B" />
+            <Entypo onPress={addCount} name="circle-with-plus" size={20} color="#076E5B" style={{ opacity: unitCount === business?.sisa_unit ? 0.3 : 1 }} />
           </View>
+          <Text style={{ fontSize: 10, fontWeight: 300, marginTop: 8 }}>Estimasi Bagi Hasil: {business?.borrower.profit_sharing_estimate}%. Sisa {business?.sisa_unit} unit</Text>
 
         </View>
 

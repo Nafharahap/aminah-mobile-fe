@@ -14,7 +14,10 @@ export default function Register() {
       />
       <View style={styles.container}>
         <Image
-          style={styles.logo}
+          style={{
+            height: 120,
+            width: 132,
+          }}
           source={logoUrl}
         />
         <Text style={styles.logoText}>Register</Text>
